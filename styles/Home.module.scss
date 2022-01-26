@@ -1,0 +1,283 @@
+.container {
+  position: relative;
+  max-height: 100vh;
+  overflow: hidden;
+  header {
+    min-height: 10vh;
+    max-height: 10vh;
+    font-size: 1.5em;
+    display: grid;
+    place-content: center;
+    font-weight: bold;
+  }
+  main {
+    min-height: 80vh;
+    max-height: 80vh;
+    background-color: #edf0f2;
+  }
+  main section:first-of-type {
+    div {
+      height: 10vh;
+      padding: 4vh 0;
+      display: flex;
+      justify-content: space-between;
+      place-items: center;
+    }
+    div span:nth-of-type(2) {
+      width: 60vw;
+    }
+  }
+  main section:nth-of-type(2) {
+    display: none;
+    div {
+      height: 10vh;
+      padding: 4vh 0;
+      display: flex;
+      justify-content: space-between;
+      place-items: center;
+      padding: 5vh 0;
+    }
+    div span:nth-of-type(2) {
+      width: 60vw;
+    }
+  }
+  main section:nth-of-type(3) {
+    display: none;
+    div {
+      height: 10vh;
+      padding: 4vh 0;
+      display: flex;
+      justify-content: space-between;
+      place-items: center;
+      padding: 5vh 0;
+    }
+    div span:nth-of-type(2) {
+      width: 60vw;
+    }
+  }
+  .form1 {
+    transition: all 1s;
+    position: absolute;
+    z-index: 10;
+    bottom: -50vh;
+    width: 100vw;
+    height: 50vh;
+    background-color: white;
+    display: grid;
+    padding: 8vh 10vw;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    label {
+      font-size: 1.2em;
+    }
+    input {
+      margin: 1vh 0 2vh 0;
+      height: 5vh;
+    }
+    p {
+      display: grid;
+      place-content: center;
+      button {
+        width: 50vw;
+        padding: 1vh 10vw;
+        background-color: coral;
+        color: white;
+        font-size: 1.1em;
+      }
+    }
+  }
+
+  .form2 {
+    display: none;
+    transition: all 1s;
+    position: absolute;
+    z-index: 10;
+    top: -100vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    display: grid;
+    padding: 8vh 10vw;
+    i {
+      position: absolute;
+      right: 4vw;
+      top: 2vh;
+      color: red;
+      font-weight: bolder;
+    }
+    section {
+      border: 2px solid black;
+      display: grid;
+      height: 40vh;
+    }
+    article {
+      border: 2px solid black;
+      height: 25vh;
+      color: gray;
+      margin: 5vh 0 3vh 0;
+      overflow: scroll;
+      div {
+        display: flex;
+        justify-content: space-evenly;
+      }
+    }
+    label {
+      font-size: 1.2em;
+    }
+    input {
+      margin: 0vh 0 2vh 0;
+      height: 5vh;
+    }
+    span {
+      display: grid;
+      place-content: center;
+      margin: 1vh;
+      button {
+        width: 50vw;
+        padding: 1vh 10vw;
+        background-color: coral;
+        color: white;
+        font-size: 1.1em;
+        border-radius: 50px;
+      }
+    }
+    .resetSpan {
+      display: flex;
+      justify-content: flex-end;
+      button {
+        width: 15vw;
+        display: grid;
+        place-content: center;
+        background-color: black;
+        border-radius: 50px;
+      }
+    }
+  }
+  .form2 p:first-of-type {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    button {
+      color: white;
+      background-color: green;
+      width: 15vw;
+      height: 15vw;
+      padding: 5px;
+      border-radius: 50px;
+      font-size: 2.5em;
+    }
+  }
+  .form3 {
+    transition: all 1s;
+    position: absolute;
+    z-index: 10;
+    right: -100vw;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    .back {
+      font-weight: bold;
+      color: red;
+    }
+    .dayAndPeriods {
+      background-color: #eceaf4;
+      padding: 2vh 4vw;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2vh;
+      label {
+        display: inline-block;
+        width: 15vw;
+      }
+      span span {
+        width: 10vw !important;
+        display: inline-block;
+        text-align: center;
+        margin: 0 3vw;
+      }
+      input {
+        width: 25vw;
+        transform: scale(1.5);
+      }
+    }
+    .form3Heading {
+      display: flex;
+      justify-content: space-between;
+      padding: 2vh 4vw;
+    }
+    .ttStepDiv {
+      background-color: gray;
+      padding: 1.5vh 3vw;
+    }
+    p {
+      padding: 2vh 4vw;
+    }
+    .buttonPara {
+      display: grid;
+      place-content: center;
+      button {
+        background-color: coral;
+        width: 35vw;
+        height: 5vh;
+        color: white;
+      }
+    }
+    .ttStepSection2 {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      right: -100vw;
+      bottom: 0;
+      z-index: 40;
+      transition: all 1s;
+      background-color: white;
+    }
+    .ttStepSection3 {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      right: -100vw;
+      bottom: 0;
+      z-index: 40;
+      transition: all 1s;
+      background-color: white;
+      overflow: scroll;
+    }
+  }
+  footer {
+    position: relative;
+    min-height: 10vh;
+    max-height: 10vh;
+    display: flex;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    color: gray;
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 33vw;
+    }
+  }
+  footer div:first-of-type {
+    color: green;
+  }
+  footer button {
+    z-index: 5;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    left: 37.5vw;
+    top: -3vh;
+    background-color: coral;
+    color: white;
+    width: 25vw;
+    height: 6vh;
+    border-radius: 50px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+}
