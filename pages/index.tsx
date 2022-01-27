@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.scss";
-
+//commm
 const Home: NextPage = () => {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
@@ -37,6 +37,7 @@ const Home: NextPage = () => {
     setWeekdays(selected);
     setSubPeriodsInWeek(new Array(subjects.length));
   };
+
   const handlePeriodNo = (index: number, value: string) => {
     subPeriodsInWeek.splice(index, 1, value);
     setSubPeriodsInWeek(subPeriodsInWeek);
