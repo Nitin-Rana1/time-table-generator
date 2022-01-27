@@ -2,29 +2,36 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.scss";
-//commm
+
 const Home: NextPage = () => {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
   const handleAddSubject = () => {
     setSubjects([...subjects, subject]);
   };
-  const [cName, setCName] = useState("");
-  const [sections, setSections] = useState<number>();
+
+  const [cName, setCName] = useState<string>("");
+  const [section, setSection] = useState<string>("");
 
   const [periodsADay, setPeriodsADay] = useState<number>();
-  const [weekdays, setWeekdays] = useState<string[]>([]);
+  const [weekDays, setweekDays] = useState<string[]>([]);
+
   const [subPeriodsInWeek, setSubPeriodsInWeek] = useState<string[]>([]);
   const selectRef = useRef<HTMLSelectElement | null>(null);
   interface OneSectionData {
     className: string;
     section: string;
-    subsPeriodsInWeek: Array<number>;
+    subsPeriodsInWeek: Array<string>;
   }
   interface CommonData {
     subjects: string[];
-    periodsADay: number;
+    periodsADay: number | undefined;
     weekDays: string[];
+  }
+  interface TT {
+    className: string;
+    section: string;
+    tt: Array<Array<string | null>>;
   }
   const handleSee = () => {
     const options = selectRef.current!.options;
@@ -34,55 +41,54 @@ const Home: NextPage = () => {
         selected.push(option.value);
       }
     }
-    setWeekdays(selected);
+    setweekDays(selected);
     setSubPeriodsInWeek(new Array(subjects.length));
   };
-
   const handlePeriodNo = (index: number, value: string) => {
     subPeriodsInWeek.splice(index, 1, value);
     setSubPeriodsInWeek(subPeriodsInWeek);
   };
-  const allSee = () => {
-    console.log("weekDays", weekdays);
-    console.log("subPeriodsInweek", subPeriodsInWeek);
-    console.log("periodsAday", periodsADay);
-  };
-  const generateAllTT = (
-    allSectionsData: OneSectionData[],
+
+  const generateTT = (
+    oneSectionData: OneSectionData,
     commonData: CommonData
   ) => {
-    for (let i = 0; i < 10; i++) {
-      generateTT(allSectionsData[i]);
+    let { className, section, subsPeriodsInWeek } = oneSectionData;
+    let { subjects, periodsADay, weekDays } = commonData;
+
+    let subPeriods: number[] = [];
+    for (let i = 0; i < subsPeriodsInWeek.length; i++) {
+      subPeriods.push(parseInt(subsPeriodsInWeek[i]));
     }
-  };
-  const generateTT = (oneSectionData: OneSectionData) => {
-    let subPeriodsA: number[] = [];
-    for (let i = 0; i < subPeriodsInWeek.length; i++) {
-      subPeriodsA.push(parseInt(subPeriodsInWeek[i]));
-    }
-    let secA: Array<string | null> = [];
+    console.log(subPeriods);
+    let oneTT: Array<Array<string | null>> = [];
     for (let i = 0; i < periodsADay!; i++) {
       let t = [];
-      for (let j = 0; j < weekdays.length; j++) {
+      for (let j = 0; j < weekDays.length; j++) {
         t.push(null);
       }
-      secA.push(t);
+      oneTT.push(t);
     }
-    let subjectsAllocated = new Array(subjects.length).fill(secA);
+    let subjectsAllocated = new Array(subjects.length).fill(oneTT);
     // regular subjects
     const fillRegularSubjectsInTT = () => {
       for (let i = 0; i < subjects.length; i++) {
-        if (subPeriodsA[i] < weekdays.length) continue;
+        if (
+          subPeriods[i] < weekDays.length ||
+          Number.isNaN(subPeriods[i]) ||
+          subPeriods[i] == null
+        )
+          continue;
         let count = 0;
-        for (let j = 0; j < periodsADay; j++) {
+        for (let j = 0; j < periodsADay!; j++) {
           let loopBreak = false;
-          for (let k = 0; k < weekdays.length; k++) {
-            if (subjectsAllocated[i][j][k] == null && secA[j][k] == null) {
-              secA[j][k] = subjects[i];
+          for (let k = 0; k < weekDays.length; k++) {
+            if (subjectsAllocated[i][j][k] == null && oneTT[j][k] == null) {
+              oneTT[j][k] = subjects[i];
               subjectsAllocated[i][j][k] = subjects[i];
               count++;
-              subPeriodsA[i] -= 1;
-              if (count == weekdays.length) {
+              subPeriods[i] -= 1;
+              if (count == weekDays.length) {
                 loopBreak = true;
                 break;
               }
@@ -95,8 +101,8 @@ const Home: NextPage = () => {
     fillRegularSubjectsInTT();
 
     //random array with 0, 1,2... upto subjects length
-    let randomArray = [];
-    const createRandomArray = (n) => {
+    let randomArray: number[] = [];
+    const createRandomArray = (n: number) => {
       while (randomArray.length < n) {
         let randNo = Math.floor(Math.random() * n);
         if (!randomArray.includes(randNo)) randomArray.push(randNo);
@@ -109,19 +115,22 @@ const Home: NextPage = () => {
       for (let i = 0; i < subjects.length; i++) {
         let count = 0;
         let r = randomArray[i];
-        if (subPeriodsA[r] == 0) {
+        if (
+          subPeriods[r] == 0 ||
+          Number.isNaN(subPeriods[r]) ||
+          subPeriods[r] == null
+        )
           continue;
-        }
         for (let j = 0; j < periodsADay!; j++) {
           let loopBreak = false;
-          for (let k = 0; k < weekdays.length; k++) {
-            if (subjectsAllocated[r][j][k] == null && secA[j][k] == null) {
-              secA[j][k] = subjects[r];
+          for (let k = 0; k < weekDays.length; k++) {
+            if (subjectsAllocated[r][j][k] == null && oneTT[j][k] == null) {
+              oneTT[j][k] = subjects[r];
               subjectsAllocated[r][j][k] = subjects[r];
               count++;
-              subPeriodsA[r] -= 1;
+              subPeriods[r] -= 1;
 
-              if (subPeriodsA[r] == 0) {
+              if (subPeriods[r] == 0) {
                 loopBreak = true;
                 break;
               }
@@ -132,10 +141,34 @@ const Home: NextPage = () => {
       }
     };
     completeTT();
-    console.log(secA);
+    console.log(oneTT);
+    setSchoolTT([
+      ...schoolTT,
+      {
+        className: className,
+        section: section,
+        tt: oneTT,
+      },
+    ]);
   };
+  const completeOneSchoolTT = () => {
+    setAllSchoolTT([...allSchoolTT, schoolTT]);
+  };
+  const [schoolTT, setSchoolTT] = useState<Array<TT>>([]);
+  const [allSchoolTT, setAllSchoolTT] = useState<Array<Array<TT>>>([]);
+  // const [iOfSchoolTT, setIOfTTInSchoolTT] = useState(0);
+  // const [iOfSchoolTTInAllSchoolTTs, setiOfSchoolTTInAllSchoolTTs] = useState(0);
+  const allSee = () => {
+    console.log("schoolTT", schoolTT);
+    console.log("allSchoolTT", allSchoolTT);
+  };
+  const allClear = () => {
+    setAllSchoolTT([]);
+    setSchoolTT([]);
+  };
+
   return (
-    <div>
+    <main className={styles.container}>
       <div>
         <label htmlFor='subject'>Subject:</label>
         <input
@@ -148,27 +181,10 @@ const Home: NextPage = () => {
         <div>{subjects}</div>
       </div>
       <div>
-        <label htmlFor='cName'>Class Name:</label>
-        <input
-          type='text'
-          id='cName'
-          onChange={(e) => setCName(e.target.value)}
-        />
-        {cName}
-        <br />
-        <label htmlFor='sections'>Sections:</label>
-        <input
-          type='number'
-          id='sections'
-          onChange={(e) => setSections(parseInt(e.target.value))}
-        />
-        {sections}
-        <br />
         <label htmlFor='periodsADay'>Periods A Day: </label>
         <input
           type='number'
           id='periodsADay'
-          value={periodsADay}
           onChange={(e) => setPeriodsADay(parseInt(e.target.value))}
         />
         {periodsADay}
@@ -183,10 +199,28 @@ const Home: NextPage = () => {
           <option value={"SAT"}>SAT</option>
           <option value={"SUN"}>SUN</option>
         </select>
-        {weekdays}
-        <button onClick={handleSee}>Set WeekDays</button>
+        {weekDays}
+        <button onClick={handleSee}>Set weekDays</button>
+        <br />
       </div>
-      <div>
+      <div className={styles.diva}>
+        <h1>TT One</h1>
+        <label htmlFor='cName'>Class Name:</label>
+        <input
+          type='text'
+          id='cName'
+          onChange={(e) => setCName(e.target.value)}
+        />
+        {cName}
+        <br />
+        <label htmlFor='section'>Section:</label>
+        <input
+          type='text'
+          id='section'
+          onChange={(e) => setSection(e.target.value)}
+        />
+        {section}
+        <br />
         {subjects.length >= 1 ? (
           subjects.map((value, index) => {
             return (
@@ -204,11 +238,32 @@ const Home: NextPage = () => {
             <h1>diiii</h1>
           </div>
         )}
+        <button
+          onClick={(e) =>
+            generateTT(
+              {
+                className: cName,
+                section: section,
+                subsPeriodsInWeek: subPeriodsInWeek,
+              },
+              {
+                subjects: subjects,
+                periodsADay: periodsADay,
+                weekDays: weekDays,
+              }
+            )
+          }
+        >
+          Create TT
+        </button>
+        <button onClick={completeOneSchoolTT}>Complete One SchoolTT</button>
+        <button onClick={allSee}>All See</button>
+        <button onClick={allClear}>All clear</button>
       </div>
-      <div></div>
-      <button onClick={generateTT}>Generate TT</button>
-      <button onClick={allSee}>ALL SEE</button>
-    </div>
+    </main>
   );
 };
 export default Home;
+// subjects: string[];
+// periodsADay: number;
+// weekDays: string[];
