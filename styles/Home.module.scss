@@ -1,5 +1,144 @@
 .container {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  .section1 {
+    height: 84vh;
+    width: 100vw;
+    overflow: hidden;
+    h1 {
+      text-align: center;
+      height: 4vh;
+      margin: 2vh 0;
+    }
+    input {
+      width: 70vw;
+      margin: 2vh 10vw;
+      // transform: scaleY(1.4);
+      height: 4vh;
+    }
+    button {
+      color: white;
+    }
+    .addButton {
+      border-radius: 50%;
+      background-color: green;
+      transform: scale(1.5);
+    }
+
+    .noSubWarn {
+      color: grey;
+      width: 100vw;
+      height: 84vh;
+      display: grid;
+      place-content: center;
+    }
+    .allSubjects {
+      overflow: scroll;
+      height: 68vh;
+      .subData {
+        display: flex;
+        justify-content: space-around;
+        padding: 4vh 0;
+        background-color: yellowgreen;
+        border-radius: 15px;
+        margin-bottom: 3vh;
+        button {
+          background-color: red;
+        }
+      }
+    }
+  }
+  .section2 {
+    transition: all 1s;
+    position: absolute;
+    bottom: 8vh;
+    right: -100vw;
+    height: 84vh;
+    width: 100vw;
+    background-color: white;
+    h3 {
+      text-align: center;
+    }
+    span {
+      padding: 3vw;
+      display: flex;
+      justify-content: space-between;
+      margin: 10vh 0;
+      select {
+        border: 1px solid #aaa;
+        border-radius: 2px;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        color: #555;
+        font-size: inherit;
+        margin: 0 10vw;
+        padding: 0 10px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 25vw;
+      }
+    }
+    button {
+      width: 100vw;
+      height: 6vh;
+      position: absolute;
+      bottom: 0;
+      background-color: white;
+      border: 1px solid black;
+      // right: 25vw;
+    }
+  }
+  .section3 {
+    transition: all 1s;
+    position: absolute;
+    bottom: 8vh;
+    right: -100vw;
+    height: 84vh;
+    width: 100vw;
+    background-color: white;
+    overflow: scroll;
+    label,
+    input {
+      display: inline-block;
+      width: 45vw;
+    }
+    .section3Data {
+      div {
+        display: flex;
+        justify-content: space-between;
+        button {
+          width: 10vw;
+        }
+        small {
+          display: inline-block;
+          width: 20vw;
+          text-align: center;
+        }
+      }
+    }
+    article {
+      .oneTT {
+        margin-bottom: 4vh;
+        background-color: coral;
+        .weekDayName {
+          display: flex;
+          justify-content: space-between;
+          span {
+            flex-basis: auto;
+          }
+        }
+        .ttRow {
+          width: 100vw;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
 }
-.diva {
-  border: 2px solid black;
+.fixWidth {
+  width: 10vw;
 }
