@@ -2,7 +2,7 @@ import styles from '../components/styles/Header.module.scss';
 function Header(){
   return (
     <div className={styles.header}>
-      HEADER
+      TimeTable Generator
     </div>
   )
 }

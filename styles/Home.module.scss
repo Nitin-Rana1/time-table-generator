@@ -3,6 +3,13 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  .settingIcon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 5px;
+    background-color: red;
+  }
   .section1 {
     height: 84vh;
     width: 100vw;
@@ -40,8 +47,8 @@
       .subData {
         display: flex;
         justify-content: space-around;
-        padding: 4vh 0;
-        background-color: yellowgreen;
+        padding: 2vh 0;
+        background-color: #36d49e;
         border-radius: 15px;
         margin-bottom: 3vh;
         button {
@@ -51,7 +58,7 @@
     }
   }
   .section2 {
-    transition: all 1s;
+    transition: all 600ms;
     position: absolute;
     bottom: 8vh;
     right: -100vw;
@@ -90,9 +97,14 @@
       border: 1px solid black;
       // right: 25vw;
     }
+    .sec2next {
+      background-color: coral;
+      color: white;
+      font-size: 1.2em;
+    }
   }
   .section3 {
-    transition: all 1s;
+    transition: all 600ms;
     position: absolute;
     bottom: 8vh;
     right: -100vw;
@@ -109,8 +121,15 @@
       div {
         display: flex;
         justify-content: space-between;
+        padding: 1vh 5vw;
+        margin: 2vh 0;
+        background-color: rgb(253, 171, 141);
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        border-radius: 50px;
+
         button {
           width: 10vw;
+          font-size: 1.2em;
         }
         small {
           display: inline-block;
@@ -121,24 +140,71 @@
     }
     article {
       .oneTT {
-        margin-bottom: 4vh;
-        background-color: coral;
-        .weekDayName {
-          display: flex;
-          justify-content: space-between;
-          span {
-            flex-basis: auto;
-          }
-        }
+        font-size: 0.5em;
+        border: 3px solid black;
+        // padding: 2vw;
+        .weekDayName,
         .ttRow {
-          width: 100vw;
+          border-top: 1px solid black;
           display: flex;
           justify-content: space-between;
+        }
+        .weekDayName{
+          background-color: coral;
+          font-weight: bold;
+        }
+        .ttRow span:first-of-type{
+          background-color: coral;
+          font-weight: bold;
+        }
+        .ttRow:nth-of-type(2n + 1){
+          background-color: red;
         }
       }
     }
+    .selectSection {
+      width: 30vw;
+    }
+    .pdfButtonGroup {
+      display: flex;
+      justify-content: space-evenly;
+      button {
+        padding: 1vw;
+      }
+      button:last-child {
+        background-color: red;
+        color: white;
+      }
+    }
   }
-}
-.fixWidth {
-  width: 10vw;
+  .settingMenuSection {
+    background-color: white;
+    transition: all 500ms;
+    position: absolute;
+    bottom: 0;
+    left: -100vw;
+    height: 100vh;
+    width: 60vw;
+    overflow: scroll;
+    h2 {
+      text-align: center;
+    }
+    div {
+      background-color: darkcyan;
+      padding: 1vw;
+      margin-bottom: 4vh;
+      border-radius: 50px;
+    }
+  }
+
+  footer {
+    div {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: gray;
+    }
+  }
+  footer div:first-of-type {
+    color: green;
+  }
 }

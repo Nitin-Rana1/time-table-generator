@@ -22,9 +22,9 @@ const Home: NextPage = () => {
   };
 
   const [cName, setCName] = useState<string>("");
-  const [section, setSection] = useState<string>("");
+  const [section, setSection] = useState<string>("A");
 
-  const [periodsADay, setPeriodsADay] = useState<number>(6);
+  const [periodsADay, setPeriodsADay] = useState<number>();
   const [weekDays, setweekDays] = useState<string[]>([]);
 
   const [subPeriodsInWeek, setSubPeriodsInWeek] = useState<number[]>([]);
@@ -73,6 +73,16 @@ const Home: NextPage = () => {
     }
     setweekDays(selected);
     setSubPeriodsInWeek(new Array(subjects.length).fill(0));
+  };
+  const selectPeriodsADayRef = useRef<HTMLSelectElement | null>(null);
+  const handlePeriodsADaySelect = () => {
+    const options = selectPeriodsADayRef.current!.options;
+    for (const option of options) {
+      if (option.selected) {
+        setPeriodsADay(parseInt(option.value));
+        return;
+      }
+    }
   };
   const handlePeriodNo = (index: number, n: number) => {
     let arr = [...subPeriodsInWeek];
@@ -394,63 +404,88 @@ const Home: NextPage = () => {
   };
   const section2Ref = useRef(null);
   const section3Ref = useRef(null);
-
+  const settingMenu = useRef(null);
+  const closeSettingMenu = () => {
+    settingMenu.current!.style.left = "-100vw";
+    console.log("off");
+  };
   const showSection = (n: number) => {
+    if (n == 0) {
+      console.log("on");
+      settingMenu.current!.style.left = "0";
+    }
+
     if (n == 1) {
       section2Ref.current!.style.right = "-100vw";
       section3Ref.current!.style.right = "-100vw";
-      allClear();
+      footSub.current!.style.color = "green";
+      footTT.current!.style.color = "gray";
+      closeSettingMenu();
+      return;
     }
 
     if (n == 2) {
       section2Ref.current!.style.right = "0";
+      footSub.current!.style.color = "gray";
+      footTT.current!.style.color = "green";
+      closeSettingMenu();
+      return;
     }
     if (n == 3) {
       section3Ref.current!.style.right = "0";
+      closeSettingMenu();
+      return;
     }
   };
   const section2Next = (n: number) => {
     if (n == 1) {
-      setweekDaysFunc();
       makeSubAll();
       showSection(3);
-      allClear();
     }
   };
   const pictureRef = useRef<HTMLDivElement | null>(null);
-  const pictureOutputRef = useRef<HTMLImageElement | null>(null);
 
   async function takeCC() {
-    // html2canvas(pictureRef.current!).then(function (canvas) {
-    //   let imgData = canvas.toDataURL("image/png");
-    //   let doc = new jsPDF();
-    //   doc.addImage(imgData, "PNG", 10, 10);
-    //   doc.save("timetable.pdf");
-    // });
-    // var doc = new jsPDF();
-    // var requiredPages = 4;
-    // for (var i = 0; i < requiredPages; i++) {
-    //   doc.addPage();
-    //   //doc.text(20, 100, 'Some Text.');
-    // }
-    // doc.save("hello.pdf");
-
     let doc = new jsPDF();
     for (let i = 0; i < schoolTT.length; i++) {
       if (i != 0) doc.addPage();
       let div = document.getElementsByClassName("oneTT")[i];
       let canvas = await html2canvas(div);
-      var width = doc.internal.pageSize.getWidth();
-      var height = doc.internal.pageSize.getHeight();
+      let width = doc.internal.pageSize.getWidth();
+      let height = doc.internal.pageSize.getHeight();
       // let imgData = canvas.toDataURL("image/png", 0, 0, width, height);
-      doc.addImage(canvas, "PNG", 0, 0, width, height/2);
+      doc.addImage(canvas, "PNG", 0, 0, width, height / 2);
     }
     doc.save("timetable.pdf");
+  }
+  const footSub = useRef<HTMLDivElement>(null);
+  const footTT = useRef<HTMLDivElement>(null);
+  const selectSectionRef = useRef<HTMLSelectElement>(null);
+  const selectSection = () => {
+    const options = selectSectionRef.current!.options;
+    for (const option of options) {
+      if (option.selected) {
+        setSection(option.value);
+        return;
+      }
+    }
+    setSection("X");
+  };
+  const sectionList = [];
+
+  for (let i = 65; i <= 90; i++) {
+    sectionList.push(String.fromCharCode(i));
+  }
+  for (let i = 0; i <= 10; i++) {
+    sectionList.push(i.toString());
   }
   return (
     <main className={styles.container}>
       <Header />
-      <section className={styles.section1}>
+      <span onClick={() => showSection(0)} className={styles.settingIcon}>
+        Sett
+      </span>
+      <section className={styles.section1} onClick={closeSettingMenu}>
         <h1>Subjects List</h1>
         <input type='text' onChange={(e) => setSubject(e.target.value)} />
         <button className={styles.addButton} onClick={handleAddSubject}>
@@ -461,7 +496,7 @@ const Home: NextPage = () => {
             subjects.map((value, index) => {
               return (
                 <div className={styles.subData} key={index}>
-                  <span>{index + 1}</span>
+                  <span>{index + 1}.</span>
                   {value}
                   <button onClick={(e) => deleteSubject(index)}>Delete</button>
                 </div>
@@ -472,20 +507,44 @@ const Home: NextPage = () => {
           )}
         </div>
       </section>
-      <section className={styles.section2} ref={section2Ref}>
+      <section
+        className={styles.section2}
+        ref={section2Ref}
+        onClick={closeSettingMenu}
+      >
         <h3>Give below info then click next</h3>
         <span>
           <label htmlFor='periodsADay'>Periods A Day: </label>
-          <input
-            type='number'
+          <select
             id='periodsADay'
-            onChange={(e) => setPeriodsADay(parseInt(e.target.value))}
-          />
-          {periodsADay}
+            onChange={handlePeriodsADaySelect}
+            ref={selectPeriodsADayRef}
+          >
+            <option value={2}>2</option>
+            <option value={3}>3</option>
+            <option value={4}>4</option>
+            <option value={5}>5</option>
+            <option value={6}>6</option>
+            <option value={7}>7</option>
+            <option value={8}>8</option>
+            <option value={9}>9</option>
+            <option value={10}>10</option>
+            <option value={11}>11</option>
+            <option value={12}>12</option>
+            <option value={13}>13</option>
+            <option value={14}>14</option>
+            <option value={15}>15</option>
+          </select>
         </span>
         <span>
           <label htmlFor='days'>Select working Days</label>
-          <select ref={selectRef} id='days' multiple size={7}>
+          <select
+            ref={selectRef}
+            onChange={setweekDaysFunc}
+            id='days'
+            multiple
+            size={7}
+          >
             <option value={"MON"}>MON</option>
             <option value={"TUE"}>TUE</option>
             <option value={"WED"}>WED</option>
@@ -495,16 +554,20 @@ const Home: NextPage = () => {
             <option value={"SUN"}>SUN</option>
           </select>
         </span>
-        <button onClick={() => section2Next(1)}>Next</button>
+        <button onClick={() => section2Next(1)} className={styles.sec2next}>
+          Next
+        </button>
       </section>
-      <section className={styles.section3} ref={section3Ref}>
+      <section
+        className={styles.section3}
+        ref={section3Ref}
+        onClick={closeSettingMenu}
+      >
         <h3>Here, create timetable one class at a Time</h3>
         <h4>
           Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /{" "}
           {weekDays.length * periodsADay}
         </h4>
-
-        <br />
         <label htmlFor='cName'>Standard Name:</label>
         <input
           type='text'
@@ -512,12 +575,30 @@ const Home: NextPage = () => {
           onChange={(e) => setCName(e.target.value)}
         />
         <br />
+        <br />
+
         <label htmlFor='section'>Section:</label>
-        <input
-          type='text'
+        <select
+          className={styles.selectSection}
+          ref={selectSectionRef}
           id='section'
-          onChange={(e) => setSection(e.target.value)}
-        />
+          onChange={selectSection}
+        >
+          {sectionList.map((value, index) => {
+            return (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            );
+          })}
+        </select>
+        <br />
+        <br />
+        <div className={styles.pdfButtonGroup}>
+          <button onClick={generateTTLoop}>Create One TT</button>
+          <button onClick={takeCC}>Download PDF</button>
+          <button onClick={allClear}>Clear All</button>
+        </div>
         <br />
         <div className={styles.section3Data}>
           {subjects.length >= 1 ? (
@@ -543,71 +624,80 @@ const Home: NextPage = () => {
             </div>
           )}
         </div>
-        <button onClick={generateTTLoop}>Create One Section TT</button>
-        <button onClick={takeCC}>photo</button>
-        <button onClick={completeOneSchoolTT}>
+        {/* <button onClick={completeOneSchoolTT}>
           Save This Set Of School TimeTables
-        </button>
-        <button onClick={allSee}>all c</button>
+        </button> */}
+        {/* <button onClick={allSee}>all c</button> */}
 
-        <button onClick={allClear}>all clear</button>
         <article>
           {schoolTT.length == 0 ? (
-            <div>no data</div>
+            <div>
+              no data plz select periods and click on create one time table
+              button
+            </div>
           ) : (
-            <>
-              <div ref={pictureRef}>
-                {schoolTT.map((value, i) => {
-                  return (
-                    <div key={i} className='oneTT'>
-                      <div className={styles.oneTT}>
-                        <h4>
-                          Standard Name: {value.className}
-                          <br />
-                          Section: {value.section}
-                        </h4>
-                        <div className={styles.weekDayName}>
-                          <span className={styles.fixWidth}>Days </span>
-                          {weekDays.map((value) => {
-                            return <span key={value}>{value}</span>;
-                          })}
-                        </div>
-                        {value.tt.map((value, i1) => {
-                          return (
-                            <>
-                              <div className={styles.ttRow} key={i1}>
-                                {value.map((value, i2) => {
-                                  return (
-                                    <>
-                                      {i2 == 0 ? (
+            <div ref={pictureRef}>
+              {schoolTT.map((value, i) => {
+                return (
+                  <div key={i} className='oneTT'>
+                    <h4>Standard Name: {value.className}</h4>
+                    <h4>Section: {value.section}</h4>
+                    <div className={styles.oneTT}>
+                      <div className={styles.weekDayName}>
+                        <span>Days </span>
+                        {weekDays.map((value) => {
+                          return <span key={value}>{value}</span>;
+                        })}
+                      </div>
+                      {value.tt.map((value, i1) => {
+                        return (
+                          <>
+                            <div className={styles.ttRow} key={i1}>
+                              {value.map((value, i2) => {
+                                return (
+                                  <>
+                                    {i2 == 0 ? (
+                                      <>
                                         <span className={styles.fixWidth}>
                                           {i1 + 1}
                                         </span>
-                                      ) : (
-                                        <span></span>
-                                      )}
+                                        <span key={i2}>{value}</span>
+                                      </>
+                                    ) : (
                                       <span key={i2}>{value}</span>
-                                    </>
-                                  );
-                                })}
-                              </div>
-                            </>
-                          );
-                        })}
-                      </div>
+                                    )}
+                                  </>
+                                );
+                              })}
+                            </div>
+                          </>
+                        );
+                      })}
                     </div>
-                  );
-                })}
-              </div>
-              )
-            </>
+                  </div>
+                );
+              })}
+            </div>
           )}
           {/* <img ref={pictureOutputRef} /> */}
         </article>
       </section>
+      <section className={styles.settingMenuSection} ref={settingMenu}>
+        <h2>Setting</h2>
+        <div>Share App</div>
+        <div>FeedBack</div>
+        <div>Credits</div>
+        <div>Version 1.2.1</div>
+        <div>Language</div>
+        <div>About Us</div>
+      </section>
       <footer className={stylesF.footer}>
-        <div onClick={() => showSection(1)}>Subjects</div>
-        <div onClick={() => showSection(2)}>TimeTables</div>
+        <div onClick={() => showSection(1)} ref={footSub}>
+          Subjects
+        </div>
+        <div onClick={() => showSection(2)} ref={footTT}>
+          TimeTables
+        </div>
       </footer>
     </main>
   );
