@@ -111,8 +111,8 @@ const Home: NextPage = () => {
       subPeriodsInWeek.reduce((a, b) => a + b, 0) !=
         weekDays.length * periodsADay!
     ) {
-      if (cName == "") setCreateOneTTWarnMsg("No cName");
-      else setCreateOneTTWarnMsg("Please fill all subjects periods");
+      if (cName == "") setCreateOneTTWarnMsg("No standard/class name given!");
+      else setCreateOneTTWarnMsg("Please fill all subjects periods!");
       showWarning(31);
       setTimeout(() => {
         showWarning(30);
