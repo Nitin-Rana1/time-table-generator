@@ -37,7 +37,7 @@
     .noSubWarn {
       color: grey;
       width: 100vw;
-      height: 84vh;
+      height: 68vh;
       display: grid;
       place-content: center;
       text-align: center;
@@ -276,4 +276,16 @@
 .warn{
   color: red;
   font-weight: bolder;
+  transition: all 200ms;
+  transform: scaleX(0);
+  padding: 2vh;
+  text-align: center;
+}
+.section3{
+  .warn{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+  }
 }

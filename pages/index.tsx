@@ -12,17 +12,17 @@ import { TiDelete } from "react-icons/ti";
 import { BiArrowBack } from "react-icons/bi";
 
 const Home: NextPage = () => {
-  const [subjects, setSubjects] = useState<string[]>([
-    "Physics by tilakMani",
-    "Chemistry by bhandari mam",
-    "Maths ",
-    "IP by Mahajan sir",
-    "BIO by Bhadri mam",
-    "Geography by pundir",
-    "Histroy by puuja mam",
-    "draw",
-  ]);
-  // const [subjects, setSubjects] = useState<string[]>([]);
+  // const [subjects, setSubjects] = useState<string[]>([
+  //   "Physics by tilakMani",
+  //   "Chemistry by bhandari mam",
+  //   "Maths ",
+  //   "IP by Mahajan sir",
+  //   "BIO by Bhadri mam",
+  //   "Geography by pundir",
+  //   "Histroy by puuja mam",
+  //   "draw",
+  // ]);
+  const [subjects, setSubjects] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
   const handleAddSubject = () => {
     allClear();
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
   const [cName, setCName] = useState<string>("");
   const [section, setSection] = useState<string>("A");
 
-  const [periodsADay, setPeriodsADay] = useState<number>();
+  const [periodsADay, setPeriodsADay] = useState<number>(0);
   const [weekDays, setweekDays] = useState<string[]>([]);
 
   const [subPeriodsInWeek, setSubPeriodsInWeek] = useState<number[]>([]);
@@ -106,6 +106,23 @@ const Home: NextPage = () => {
     setSubPeriodsInWeek(arr);
   };
   const generateTTLoop = () => {
+    if (
+      cName == "" ||
+      subPeriodsInWeek.reduce((a, b) => a + b, 0) !=
+        weekDays.length * periodsADay!
+    ) {
+      if (cName == "") setCreateOneTTWarnMsg("No cName");
+      else setCreateOneTTWarnMsg("Please fill all subjects periods");
+      showWarning(31);
+      setTimeout(() => {
+        showWarning(30);
+      }, 2000);
+      return;
+    }
+
+    // Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /
+    // {weekDays.length * periodsADay!}
+
     const checkWithFunc = (func: any) => {
       let arr = func(
         {
@@ -430,7 +447,7 @@ const Home: NextPage = () => {
       setIsSettingOpen(0);
     }
     //About Us
-    if (n == 1){
+    if (n == 1) {
       settingMenuAboutUs.current!.style.left = "-100vw";
     }
   };
@@ -446,6 +463,22 @@ const Home: NextPage = () => {
     }
   };
   const footerUnderlineRef = useRef<HTMLDivElement>(null);
+  //warnings ref
+  const noSubWarnRef = useRef<HTMLDivElement>(null);
+  const noPeriodWeekDatsWarnRef = useRef<HTMLDivElement>(null);
+  const createOneTTWarnRef = useRef<HTMLDivElement>(null);
+  const [createOneTTWarnMsg, setCreateOneTTWarnMsg] = useState("Please fill all subjects periods");
+
+  const showWarning = (n: number) => {
+    if (n == 11) noSubWarnRef.current!.style.transform = "scaleX(1)";
+    else if (n == 10) noSubWarnRef.current!.style.transform = "scaleX(0)";
+    else if (n == 21)
+      noPeriodWeekDatsWarnRef.current!.style.transform = "scaleX(1)";
+    else if (n == 20)
+      noPeriodWeekDatsWarnRef.current!.style.transform = "scaleX(0)";
+    else if (n == 31) createOneTTWarnRef.current!.style.transform = "scaleX(1)";
+    else if (n == 30) createOneTTWarnRef.current!.style.transform = "scaleX(0)";
+  };
   const showSection = (n: number) => {
     if (n == 1) {
       section2Ref.current!.style.right = "-100vw";
@@ -458,6 +491,11 @@ const Home: NextPage = () => {
     }
 
     if (n == 2) {
+      if (subjects.length == 0) {
+        showWarning(11);
+        setTimeout(() => showWarning(10), 2000);
+        return;
+      }
       section2Ref.current!.style.right = "0";
       footSub.current!.style.color = "gray";
       footTT.current!.style.color = "green";
@@ -473,6 +511,13 @@ const Home: NextPage = () => {
   };
   const section2Next = (n: number) => {
     if (n == 1) {
+      if (periodsADay == 0 || weekDays.length == 0) {
+        showWarning(21);
+        setTimeout(() => {
+          showWarning(20);
+        }, 2000);
+        return;
+      }
       makeSubAll();
       showSection(3);
     }
@@ -521,7 +566,12 @@ const Home: NextPage = () => {
       <span onClick={() => showArticle(0)} className={styles.settingIcon}>
         <VscThreeBars />
       </span>
-      <section className={styles.section1} onClick={()=>{closeArticle(0)}}>
+      <section
+        className={styles.section1}
+        onClick={() => {
+          closeArticle(0);
+        }}
+      >
         <h1>Subjects List</h1>
         <input type='text' onChange={(e) => setSubject(e.target.value)} />
         <button className={styles.addButton} onClick={handleAddSubject}>
@@ -545,6 +595,9 @@ const Home: NextPage = () => {
             })
           ) : (
             <div className={styles.noSubWarn}>
+              <div className={styles.warn} ref={noSubWarnRef}>
+                Please Add Subjects First!!
+              </div>
               No subjects Added Yet
               <br />
               <br />
@@ -561,7 +614,9 @@ const Home: NextPage = () => {
       <section
         className={styles.section2}
         ref={section2Ref}
-        onClick={()=>{closeArticle(0)}}
+        onClick={() => {
+          closeArticle(0);
+        }}
       >
         <h3>Give below info then click next</h3>
         <span>
@@ -600,6 +655,9 @@ const Home: NextPage = () => {
             <option value={"SUN"}>SUN</option>
           </select>
         </span>
+        <div className={styles.warn} ref={noPeriodWeekDatsWarnRef}>
+          Complete above info!!
+        </div>
         <button onClick={() => section2Next(1)} className={styles.sec2next}>
           Next
         </button>
@@ -607,13 +665,18 @@ const Home: NextPage = () => {
       <section
         className={styles.section3}
         ref={section3Ref}
-        onClick={()=>{closeArticle(0)}}
+        onClick={() => {
+          closeArticle(0);
+        }}
       >
         <h3 className={styles.textAlignCenter}>
           Here, create timetable one class at a Time
         </h3>
+        <div className={styles.warn} ref={createOneTTWarnRef}>
+          {createOneTTWarnMsg}
+        </div>
         <h4 className={styles.textAlignCenter}>
-          Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /{" "}
+          Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /
           {weekDays.length * periodsADay!}
         </h4>
         <label htmlFor='cName'>Standard Name:</label>
@@ -760,7 +823,7 @@ const Home: NextPage = () => {
         <h2 className={styles.textAlignCenter}>Our Member</h2>
         <section className={styles.two}>
           <div>
-            <img src='i1.jpg' alt='men' />
+            <img src='i6.jpg' alt='men' />
             <caption>
               <div>John Doe</div>
               <div>CSS King</div>
