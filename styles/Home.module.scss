@@ -8,7 +8,7 @@
     top: 0;
     left: 0;
     padding: 5px;
-    background-color: red;
+    font-size: 1.4em;
   }
   .section1 {
     height: 84vh;
@@ -40,20 +40,27 @@
       height: 84vh;
       display: grid;
       place-content: center;
+      text-align: center;
     }
     .allSubjects {
       overflow: scroll;
       height: 68vh;
       .subData {
         display: flex;
-        justify-content: space-around;
-        padding: 2vh 0;
-        background-color: #36d49e;
+        justify-content: space-between;
+        padding: 1vh 3vw;
         border-radius: 15px;
-        margin-bottom: 3vh;
-        button {
-          background-color: red;
+        margin-bottom: 0.5vh;
+        background-color: #5b4999;
+        color: white;
+        font-size: 0.8em;
+        .closeButton {
+          color: red;
+          font-size: 1.5em;
+          font-weight: 600;
         }
+      }
+      .subData:nth-child(even) {
       }
     }
   }
@@ -118,16 +125,19 @@
       width: 45vw;
     }
     .section3Data {
+      max-height: 50vh;
+      overflow: scroll;
+
       div {
         display: flex;
         justify-content: space-between;
         padding: 1vh 5vw;
-        margin: 2vh 0;
         background-color: rgb(253, 171, 141);
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-        border-radius: 50px;
-
+        // border-radius: 50px;
+        font-size: 0.8em;
         button {
+          margin-left: 1vw;
           width: 10vw;
           font-size: 1.2em;
         }
@@ -136,29 +146,28 @@
           width: 20vw;
           text-align: center;
         }
+        span {
+          display: flex;
+          align-items: center;
+        }
+      }
+      div span:last-of-type {
+        // font-size: 1em;
       }
     }
     article {
-      .oneTT {
+      table {
+        display: inline-block;
         font-size: 0.5em;
-        border: 3px solid black;
-        // padding: 2vw;
-        .weekDayName,
-        .ttRow {
-          border-top: 1px solid black;
-          display: flex;
-          justify-content: space-between;
+        width: 100vw;
+        max-width: 100vw;
+        overflow: scroll;
+        th {
+          background-color: #04aa6d;
+          color: white;
         }
-        .weekDayName{
-          background-color: coral;
-          font-weight: bold;
-        }
-        .ttRow span:first-of-type{
-          background-color: coral;
-          font-weight: bold;
-        }
-        .ttRow:nth-of-type(2n + 1){
-          background-color: red;
+        tr:nth-child(even) {
+          background-color: #f2f2f2;
         }
       }
     }
@@ -177,34 +186,94 @@
       }
     }
   }
-  .settingMenuSection {
+  .settingMenuArticle {
     background-color: white;
-    transition: all 500ms;
+    transition: all 700ms;
     position: absolute;
     bottom: 0;
-    left: -100vw;
+    // left: -100vw;
     height: 100vh;
     width: 60vw;
     overflow: scroll;
+    clip-path: circle(0% at 0% 0%);
     h2 {
       text-align: center;
     }
     div {
-      background-color: darkcyan;
+      background-color: #f2f2f2;
       padding: 1vw;
       margin-bottom: 4vh;
       border-radius: 50px;
     }
   }
-
-  footer {
-    div {
-      font-size: 1.2em;
-      font-weight: bold;
-      color: gray;
+  .settingMenuAboutUs span:first-of-type{
+    font-size: 2em;
+  }
+  .settingMenuAboutUs {
+    background-color: white;
+    position: absolute;
+    top: 0;
+    left: -100vw;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    background-color: black;
+    color: white;
+    // .style1 {
+    //   position: absolute;
+    //   clip-path: polygon(0 0, 0% 100%, 100% 0);
+    //   height: 50vh;
+    //   width: 100vw;
+    //   background-color: black;
+    //   z-index: -1;
+    //   left: 0;
+    //   top: 0;
+    // }
+    transition: all 400ms;
+    .style2 {
+      position: absolute;
+      height: 65vh;
+      width: 100vw;
+      right: 0;
+      bottom: 0;
+      background-color: #7d1860;
+      z-index: -1;
+      clip-path: polygon(100% 100%, 0% 100%, 100% 0);
+    }
+    .one {
+      p {
+        margin: 3vh 0vw;
+        padding: 10px;
+      }
+    }
+    .two {
+      display: flex;
+      justify-content: space-between;
+      height: 65vw;
+      div {
+        position: relative;
+        img {
+          width: 45vw;
+          height: 45vw;
+          clip-path: circle(50% at 50% 50%);
+        }
+        caption {
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+        }
+      }
     }
   }
-  footer div:first-of-type {
-    color: green;
-  }
+}
+.textAlignCenter {
+  text-align: center;
+}
+.mrSmall {
+  margin-right: 2vw;
+}
+.warn{
+  color: red;
+  font-weight: bolder;
 }

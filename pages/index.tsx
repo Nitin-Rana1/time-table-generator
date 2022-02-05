@@ -7,17 +7,25 @@ import html2canvas from "html2canvas";
 
 import Header from "../components/Header";
 import jsPDF from "jspdf";
+import { VscThreeBars } from "react-icons/vsc";
+import { TiDelete } from "react-icons/ti";
+import { BiArrowBack } from "react-icons/bi";
 
 const Home: NextPage = () => {
   const [subjects, setSubjects] = useState<string[]>([
-    "P",
-    "C",
-    "M",
-    "IP",
-    "BIO",
+    "Physics by tilakMani",
+    "Chemistry by bhandari mam",
+    "Maths ",
+    "IP by Mahajan sir",
+    "BIO by Bhadri mam",
+    "Geography by pundir",
+    "Histroy by puuja mam",
+    "draw",
   ]);
+  // const [subjects, setSubjects] = useState<string[]>([]);
   const [subject, setSubject] = useState<string>("");
   const handleAddSubject = () => {
+    allClear();
     setSubjects([...subjects, subject]);
   };
 
@@ -73,6 +81,7 @@ const Home: NextPage = () => {
     }
     setweekDays(selected);
     setSubPeriodsInWeek(new Array(subjects.length).fill(0));
+    allClear();
   };
   const selectPeriodsADayRef = useRef<HTMLSelectElement | null>(null);
   const handlePeriodsADaySelect = () => {
@@ -83,6 +92,7 @@ const Home: NextPage = () => {
         return;
       }
     }
+    allClear();
   };
   const handlePeriodNo = (index: number, n: number) => {
     let arr = [...subPeriodsInWeek];
@@ -397,30 +407,53 @@ const Home: NextPage = () => {
     makeSubAll();
     setSubPeriodsInWeek(new Array(subjects.length).fill(0));
   };
-
+  const [isSettingOpen, setIsSettingOpen] = useState<number>(0);
   const deleteSubject = (i: number) => {
+    if (isSettingOpen == 1) return;
+    allClear();
     subjects.splice(i, 1);
     setSubjects([...subjects]);
   };
   const section2Ref = useRef(null);
   const section3Ref = useRef(null);
   const settingMenu = useRef(null);
-  const closeSettingMenu = () => {
-    settingMenu.current!.style.left = "-100vw";
-    console.log("off");
-  };
-  const showSection = (n: number) => {
-    if (n == 0) {
-      console.log("on");
-      settingMenu.current!.style.left = "0";
-    }
+  const settingMenuAboutUs = useRef(null);
+  const settingMenuFeedBack = useRef(null);
+  const settingMenuContactUs = useRef(null);
+  const settingMenuHowToUse = useRef(null);
+  const settingMenuPremiumApp = useRef(null);
 
+  const closeArticle = (n: number) => {
+    if (n == 0) {
+      // settingMenu.current!.style.left = "-100vw";
+      settingMenu.current!.style.clipPath = "circle(0% at 0 0)";
+      setIsSettingOpen(0);
+    }
+    //About Us
+    if (n == 1){
+      settingMenuAboutUs.current!.style.left = "-100vw";
+    }
+  };
+  const showArticle = (n: number) => {
+    if (n == 0) {
+      // settingMenu.current!.style.left = "0";
+      settingMenu.current!.style.clipPath = "circle(100% at 50% 50%)";
+      setIsSettingOpen(1);
+    }
+    //About Us
+    if (n == 1) {
+      settingMenuAboutUs.current!.style.left = "0";
+    }
+  };
+  const footerUnderlineRef = useRef<HTMLDivElement>(null);
+  const showSection = (n: number) => {
     if (n == 1) {
       section2Ref.current!.style.right = "-100vw";
       section3Ref.current!.style.right = "-100vw";
       footSub.current!.style.color = "green";
       footTT.current!.style.color = "gray";
-      closeSettingMenu();
+      closeArticle(0);
+      footerUnderlineRef.current!.style.left = "0";
       return;
     }
 
@@ -428,12 +461,13 @@ const Home: NextPage = () => {
       section2Ref.current!.style.right = "0";
       footSub.current!.style.color = "gray";
       footTT.current!.style.color = "green";
-      closeSettingMenu();
+      closeArticle(0);
+      footerUnderlineRef.current!.style.left = "50vw";
       return;
     }
     if (n == 3) {
       section3Ref.current!.style.right = "0";
-      closeSettingMenu();
+      closeArticle(0);
       return;
     }
   };
@@ -449,12 +483,14 @@ const Home: NextPage = () => {
     let doc = new jsPDF();
     for (let i = 0; i < schoolTT.length; i++) {
       if (i != 0) doc.addPage();
+
       let div = document.getElementsByClassName("oneTT")[i];
       let canvas = await html2canvas(div);
       let width = doc.internal.pageSize.getWidth();
       let height = doc.internal.pageSize.getHeight();
       // let imgData = canvas.toDataURL("image/png", 0, 0, width, height);
-      doc.addImage(canvas, "PNG", 0, 0, width, height / 2);
+      doc.addImage(canvas, "PNG", 0, height / 4, width, height / 2);
+      doc.text("Thanks For using School TimeTable Generator App", 20, 20);
     }
     doc.save("timetable.pdf");
   }
@@ -482,10 +518,10 @@ const Home: NextPage = () => {
   return (
     <main className={styles.container}>
       <Header />
-      <span onClick={() => showSection(0)} className={styles.settingIcon}>
-        Sett
+      <span onClick={() => showArticle(0)} className={styles.settingIcon}>
+        <VscThreeBars />
       </span>
-      <section className={styles.section1} onClick={closeSettingMenu}>
+      <section className={styles.section1} onClick={()=>{closeArticle(0)}}>
         <h1>Subjects List</h1>
         <input type='text' onChange={(e) => setSubject(e.target.value)} />
         <button className={styles.addButton} onClick={handleAddSubject}>
@@ -498,19 +534,34 @@ const Home: NextPage = () => {
                 <div className={styles.subData} key={index}>
                   <span>{index + 1}.</span>
                   {value}
-                  <button onClick={(e) => deleteSubject(index)}>Delete</button>
+                  <div
+                    className={styles.closeButton}
+                    onClick={(e) => deleteSubject(index)}
+                  >
+                    <TiDelete />
+                  </div>
                 </div>
               );
             })
           ) : (
-            <div className={styles.noSubWarn}>No subjects Added</div>
+            <div className={styles.noSubWarn}>
+              No subjects Added Yet
+              <br />
+              <br />
+              Plz List all Subjects of School.
+              <br />
+              <br />
+              Note:- Add Subject with Teacher Name like Maths By Mishra Sir or
+              MathsA, MathsB. So that two classes can have a subject in same
+              periods if teachers are different.
+            </div>
           )}
         </div>
       </section>
       <section
         className={styles.section2}
         ref={section2Ref}
-        onClick={closeSettingMenu}
+        onClick={()=>{closeArticle(0)}}
       >
         <h3>Give below info then click next</h3>
         <span>
@@ -520,20 +571,15 @@ const Home: NextPage = () => {
             onChange={handlePeriodsADaySelect}
             ref={selectPeriodsADayRef}
           >
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-            <option value={4}>4</option>
-            <option value={5}>5</option>
-            <option value={6}>6</option>
-            <option value={7}>7</option>
-            <option value={8}>8</option>
-            <option value={9}>9</option>
-            <option value={10}>10</option>
-            <option value={11}>11</option>
-            <option value={12}>12</option>
-            <option value={13}>13</option>
-            <option value={14}>14</option>
-            <option value={15}>15</option>
+            {[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
+              (value, i) => {
+                return (
+                  <option key={value + i} value={value}>
+                    {value}
+                  </option>
+                );
+              }
+            )}
           </select>
         </span>
         <span>
@@ -561,12 +607,14 @@ const Home: NextPage = () => {
       <section
         className={styles.section3}
         ref={section3Ref}
-        onClick={closeSettingMenu}
+        onClick={()=>{closeArticle(0)}}
       >
-        <h3>Here, create timetable one class at a Time</h3>
-        <h4>
+        <h3 className={styles.textAlignCenter}>
+          Here, create timetable one class at a Time
+        </h3>
+        <h4 className={styles.textAlignCenter}>
           Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /{" "}
-          {weekDays.length * periodsADay}
+          {weekDays.length * periodsADay!}
         </h4>
         <label htmlFor='cName'>Standard Name:</label>
         <input
@@ -574,7 +622,6 @@ const Home: NextPage = () => {
           id='cName'
           onChange={(e) => setCName(e.target.value)}
         />
-        <br />
         <br />
 
         <label htmlFor='section'>Section:</label>
@@ -594,6 +641,7 @@ const Home: NextPage = () => {
         </select>
         <br />
         <br />
+
         <div className={styles.pdfButtonGroup}>
           <button onClick={generateTTLoop}>Create One TT</button>
           <button onClick={takeCC}>Download PDF</button>
@@ -605,6 +653,8 @@ const Home: NextPage = () => {
             subjects.map((value, index) => {
               return (
                 <div key={index}>
+                  <span className={styles.mrSmall}>{index + 1}. </span>
+
                   <span>{value}</span>
                   <span>
                     <button onClick={() => handlePeriodNo(index, -1)}>
@@ -619,61 +669,62 @@ const Home: NextPage = () => {
               );
             })
           ) : (
-            <div>
-              <h1>diiii</h1>
-            </div>
+            <div></div>
           )}
         </div>
         {/* <button onClick={completeOneSchoolTT}>
           Save This Set Of School TimeTables
         </button> */}
         {/* <button onClick={allSee}>all c</button> */}
+        <br />
+        <hr />
 
         <article>
           {schoolTT.length == 0 ? (
-            <div>
-              no data plz select periods and click on create one time table
-              button
+            <div className={styles.textAlignCenter}>
+              Plz select periods and click on create one time table button
             </div>
           ) : (
+            //dkfjjjjjjjjjjjjjjjjjjjjjjjsfjdslfjdkjdkdklfjdl dkdjlkdjfd
             <div ref={pictureRef}>
               {schoolTT.map((value, i) => {
                 return (
                   <div key={i} className='oneTT'>
-                    <h4>Standard Name: {value.className}</h4>
-                    <h4>Section: {value.section}</h4>
-                    <div className={styles.oneTT}>
-                      <div className={styles.weekDayName}>
-                        <span>Days </span>
+                    <h6>
+                      Standard Name: {value.className}
+                      <br />
+                      Section: {value.section}
+                    </h6>
+                    <table className={styles.oneTT}>
+                      <tr className={styles.weekDayName}>
+                        <th>Days </th>
                         {weekDays.map((value) => {
-                          return <span key={value}>{value}</span>;
+                          return <th key={value}>{value}</th>;
                         })}
-                      </div>
+                      </tr>
                       {value.tt.map((value, i1) => {
                         return (
                           <>
-                            <div className={styles.ttRow} key={i1}>
+                            <tr className={styles.ttRow} key={i1}>
                               {value.map((value, i2) => {
                                 return (
                                   <>
                                     {i2 == 0 ? (
                                       <>
-                                        <span className={styles.fixWidth}>
-                                          {i1 + 1}
-                                        </span>
-                                        <span key={i2}>{value}</span>
+                                        <th>{i1 + 1}</th>
+                                        <td key={i2}>{value}</td>
                                       </>
                                     ) : (
-                                      <span key={i2}>{value}</span>
+                                      <td key={i2}>{value}</td>
                                     )}
                                   </>
                                 );
                               })}
-                            </div>
+                            </tr>
                           </>
                         );
                       })}
-                    </div>
+                    </table>
                   </div>
                 );
               })}
@@ -682,15 +733,48 @@ const Home: NextPage = () => {
           {/* <img ref={pictureOutputRef} /> */}
         </article>
       </section>
-      <section className={styles.settingMenuSection} ref={settingMenu}>
+      <article className={styles.settingMenuArticle} ref={settingMenu}>
         <h2>Setting</h2>
         <div>Share App</div>
         <div>FeedBack</div>
         <div>Credits</div>
         <div>Version 1.2.1</div>
         <div>Language</div>
-        <div>About Us</div>
-      </section>
+        <div onClick={() => showArticle(1)}>About Us</div>
+      </article>
+      <article className={styles.settingMenuAboutUs} ref={settingMenuAboutUs}>
+        {/* <section className={styles.style1}></section> */}
+        <span onClick={() => closeArticle(1)}>
+          <BiArrowBack />
+        </span>
+        <section className={styles.style2}></section>
+
+        <section className={styles.one}>
+          <h2 className={styles.textAlignCenter}>Indian App Team NTECH</h2>
+          <p>
+            NTECH is Indian based app developer team, we at NTECH aims at
+            providing apps that are helpful to you customers and do our best to
+            provide you services that saves your time and effort.
+          </p>
+        </section>
+        <h2 className={styles.textAlignCenter}>Our Member</h2>
+        <section className={styles.two}>
+          <div>
+            <img src='i1.jpg' alt='men' />
+            <caption>
+              <div>John Doe</div>
+              <div>CSS King</div>
+            </caption>
+          </div>
+          <div>
+            <img src='i4.jpg' alt='men' />
+            <caption>
+              <div>Sindy Doll</div>
+              <div>SEO Expert</div>
+            </caption>
+          </div>
+        </section>
+      </article>
       <footer className={stylesF.footer}>
         <div onClick={() => showSection(1)} ref={footSub}>
           Subjects
@@ -698,6 +782,7 @@ const Home: NextPage = () => {
         <div onClick={() => showSection(2)} ref={footTT}>
           TimeTables
         </div>
+        <div ref={footerUnderlineRef}></div>
       </footer>
     </main>
   );
