@@ -532,7 +532,7 @@ const Home: NextPage = () => {
       if (i != 0) doc.addPage();
 
       let div = document.getElementsByClassName("oneTT")[i];
-      let canvas = await html2canvas(div);
+      let canvas = await html2canvas(div as HTMLElement);
       let width = doc.internal.pageSize.getWidth();
       let height = doc.internal.pageSize.getHeight();
       // let imgData = canvas.toDataURL("image/png", 0, 0, width, height);
