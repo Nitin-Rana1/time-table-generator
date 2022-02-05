@@ -431,14 +431,14 @@ const Home: NextPage = () => {
     subjects.splice(i, 1);
     setSubjects([...subjects]);
   };
-  const section2Ref = useRef(null);
-  const section3Ref = useRef(null);
-  const settingMenu = useRef(null);
-  const settingMenuAboutUs = useRef(null);
-  const settingMenuFeedBack = useRef(null);
-  const settingMenuContactUs = useRef(null);
-  const settingMenuHowToUse = useRef(null);
-  const settingMenuPremiumApp = useRef(null);
+  const section2Ref = useRef<HTMLElement>(null);
+  const section3Ref = useRef<HTMLElement>(null);
+  const settingMenu = useRef<HTMLElement>(null);
+  const settingMenuAboutUs = useRef<HTMLElement>(null);
+  const settingMenuFeedBack = useRef<HTMLElement>(null);
+  const settingMenuContactUs = useRef<HTMLElement>(null);
+  const settingMenuHowToUse = useRef<HTMLElement>(null);
+  const settingMenuPremiumApp = useRef<HTMLElement>(null);
 
   const closeArticle = (n: number) => {
     if (n == 0) {
@@ -467,7 +467,9 @@ const Home: NextPage = () => {
   const noSubWarnRef = useRef<HTMLDivElement>(null);
   const noPeriodWeekDatsWarnRef = useRef<HTMLDivElement>(null);
   const createOneTTWarnRef = useRef<HTMLDivElement>(null);
-  const [createOneTTWarnMsg, setCreateOneTTWarnMsg] = useState("Please fill all subjects periods");
+  const [createOneTTWarnMsg, setCreateOneTTWarnMsg] = useState(
+    "Please fill all subjects periods"
+  );
 
   const showWarning = (n: number) => {
     if (n == 11) noSubWarnRef.current!.style.transform = "scaleX(1)";
