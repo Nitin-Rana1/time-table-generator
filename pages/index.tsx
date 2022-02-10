@@ -1,57 +1,61 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
-import styles from "../styles/Home.module.scss";
-import stylesF from "../styles/Footer.module.scss";
-import html2canvas from "html2canvas";
-
-import Header from "../components/Header";
-import jsPDF from "jspdf";
-import { VscThreeBars } from "react-icons/vsc";
-import { TiDelete } from "react-icons/ti";
-import { BiArrowBack } from "react-icons/bi";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
+import Header from '../components/Header';
+import styles from '../styles/Home.module.scss';
+import stylesF from '../styles/Footer.module.scss';
+//for pdf
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+//icons
+import { VscThreeBars } from 'react-icons/vsc';
+import { TiDelete } from 'react-icons/ti';
+import { BiArrowBack } from 'react-icons/bi';
+//interfaces
+import { OneSectionData, CommonData, TT } from '../lib/utils';
 
 const Home: NextPage = () => {
-  // const [subjects, setSubjects] = useState<string[]>([
-  //   "Physics by tilakMani",
-  //   "Chemistry by bhandari mam",
-  //   "Maths ",
-  //   "IP by Mahajan sir",
-  //   "BIO by Bhadri mam",
-  //   "Geography by pundir",
-  //   "Histroy by puuja mam",
-  //   "draw",
-  // ]);
-  const [subjects, setSubjects] = useState<string[]>([]);
-  const [subject, setSubject] = useState<string>("");
+  const [subjects, setSubjects] = useState<string[]>([
+    'Physics by tilakMani',
+    'Chemistry by bhandari mam',
+    'Maths ',
+    'IP by Mahajan sir',
+    'BIO by Bhadri mam',
+    'Geography by pundir',
+    'Histroy by puuja mam',
+    'draw',
+  ]);
+  // const [subjects, setSubjects] = useState<string[]>([]);
+  const [subject, setSubject] = useState<string>('');
+
   const handleAddSubject = () => {
     allClear();
     setSubjects([...subjects, subject]);
   };
 
-  const [cName, setCName] = useState<string>("");
-  const [section, setSection] = useState<string>("A");
+  const [cName, setCName] = useState<string>('');
+  const [section, setSection] = useState<string>('A');
 
   const [periodsADay, setPeriodsADay] = useState<number>(0);
   const [weekDays, setweekDays] = useState<string[]>([]);
 
   const [subPeriodsInWeek, setSubPeriodsInWeek] = useState<number[]>([]);
   const selectRef = useRef<HTMLSelectElement | null>(null);
-  interface OneSectionData {
-    className: string;
-    section: string;
-    subsPeriodsInWeek: Array<number>;
-  }
-  interface CommonData {
-    subjects: string[];
-    periodsADay: number | undefined;
-    weekDays: string[];
-  }
-  interface TT {
-    className: string;
-    section: string;
-    tt: Array<Array<string | null>>;
-  }
+  // interface OneSectionData {
+  //   className: string;
+  //   section: string;
+  //   subsPeriodsInWeek: Array<number>;
+  // }
+  // interface CommonData {
+  //   subjects: string[];
+  //   periodsADay: number | undefined;
+  //   weekDays: string[];
+  // }
+  // interface TT {
+  //   className: string;
+  //   section: string;
+  //   tt: Array<Array<string | null>>;
+  // }
   const [subAllocated, setSubAllocated] = useState<
     Array<Array<Array<string | null>>>
   >([]);
@@ -107,12 +111,12 @@ const Home: NextPage = () => {
   };
   const generateTTLoop = () => {
     if (
-      cName == "" ||
+      cName == '' ||
       subPeriodsInWeek.reduce((a, b) => a + b, 0) !=
         weekDays.length * periodsADay!
     ) {
-      if (cName == "") setCreateOneTTWarnMsg("No standard/class name given!");
-      else setCreateOneTTWarnMsg("Please fill all subjects periods!");
+      if (cName == '') setCreateOneTTWarnMsg('No standard/class name given!');
+      else setCreateOneTTWarnMsg('Please fill all subjects periods!');
       showWarning(31);
       setTimeout(() => {
         showWarning(30);
@@ -135,7 +139,7 @@ const Home: NextPage = () => {
           periodsADay: periodsADay,
           weekDays: weekDays,
         },
-        subAllocated
+        subAllocated,
       );
       let oneTT = arr.oneTT;
       let notNull = true;
@@ -196,7 +200,7 @@ const Home: NextPage = () => {
   const hardGenerateTT = (
     oneSectionData: OneSectionData,
     commonData: CommonData,
-    subAllocated: Array<Array<Array<string | null>>>
+    subAllocated: Array<Array<Array<string | null>>>,
   ) => {
     let { className, section, subsPeriodsInWeek } = oneSectionData;
     let { subjects, periodsADay, weekDays } = commonData;
@@ -304,7 +308,7 @@ const Home: NextPage = () => {
   const generateTT = (
     oneSectionData: OneSectionData,
     commonData: CommonData,
-    subAllocated: Array<Array<Array<string | null>>>
+    subAllocated: Array<Array<Array<string | null>>>,
   ) => {
     let { className, section, subsPeriodsInWeek } = oneSectionData;
     let { subjects, periodsADay, weekDays } = commonData;
@@ -404,19 +408,20 @@ const Home: NextPage = () => {
     completeTT();
     return { subjectsAllocated, oneTT };
   };
-  const completeOneSchoolTT = () => {
-    setAllSchoolTT([...allSchoolTT, schoolTT]);
-    showSection(1);
-  };
+  // const completeOneSchoolTT = () => {
+  //   setAllSchoolTT([...allSchoolTT, schoolTT]);
+  //   showSection(1);
+  // };
+
   const [schoolTT, setSchoolTT] = useState<Array<TT>>([]);
   const [allSchoolTT, setAllSchoolTT] = useState<Array<Array<TT>>>([]);
   // const [iOfSchoolTT, setIOfTTInSchoolTT] = useState(0);
   // const [iOfSchoolTTInAllSchoolTTs, setiOfSchoolTTInAllSchoolTTs] = useState(0);
   const allSee = () => {
-    console.log("schoolTT", schoolTT);
-    console.log("allSchoolTT", allSchoolTT);
-    console.log("subALl", subAllocated);
-    console.log("subPEri", subPeriodsInWeek);
+    console.log('schoolTT', schoolTT);
+    console.log('allSchoolTT', allSchoolTT);
+    console.log('subALl', subAllocated);
+    console.log('subPEri', subPeriodsInWeek);
   };
   const allClear = () => {
     setAllSchoolTT([]);
@@ -441,25 +446,26 @@ const Home: NextPage = () => {
   const settingMenuPremiumApp = useRef<HTMLElement>(null);
 
   const closeArticle = (n: number) => {
+    //settingmenu itself
     if (n == 0) {
       // settingMenu.current!.style.left = "-100vw";
-      settingMenu.current!.style.clipPath = "circle(0% at 0 0)";
+      settingMenu.current!.style.clipPath = 'circle(0% at 0 0)';
       setIsSettingOpen(0);
     }
     //About Us
     if (n == 1) {
-      settingMenuAboutUs.current!.style.left = "-100vw";
+      settingMenuAboutUs.current!.style.left = '-100vw';
     }
   };
   const showArticle = (n: number) => {
     if (n == 0) {
       // settingMenu.current!.style.left = "0";
-      settingMenu.current!.style.clipPath = "circle(100% at 50% 50%)";
+      settingMenu.current!.style.clipPath = 'circle(100% at 50% 50%)';
       setIsSettingOpen(1);
     }
     //About Us
     if (n == 1) {
-      settingMenuAboutUs.current!.style.left = "0";
+      settingMenuAboutUs.current!.style.left = '0';
     }
   };
   const footerUnderlineRef = useRef<HTMLDivElement>(null);
@@ -468,27 +474,27 @@ const Home: NextPage = () => {
   const noPeriodWeekDatsWarnRef = useRef<HTMLDivElement>(null);
   const createOneTTWarnRef = useRef<HTMLDivElement>(null);
   const [createOneTTWarnMsg, setCreateOneTTWarnMsg] = useState(
-    "Please fill all subjects periods"
+    'Please fill all subjects periods',
   );
 
   const showWarning = (n: number) => {
-    if (n == 11) noSubWarnRef.current!.style.transform = "scaleX(1)";
-    else if (n == 10) noSubWarnRef.current!.style.transform = "scaleX(0)";
+    if (n == 11) noSubWarnRef.current!.style.transform = 'scaleX(1)';
+    else if (n == 10) noSubWarnRef.current!.style.transform = 'scaleX(0)';
     else if (n == 21)
-      noPeriodWeekDatsWarnRef.current!.style.transform = "scaleX(1)";
+      noPeriodWeekDatsWarnRef.current!.style.transform = 'scaleX(1)';
     else if (n == 20)
-      noPeriodWeekDatsWarnRef.current!.style.transform = "scaleX(0)";
-    else if (n == 31) createOneTTWarnRef.current!.style.transform = "scaleX(1)";
-    else if (n == 30) createOneTTWarnRef.current!.style.transform = "scaleX(0)";
+      noPeriodWeekDatsWarnRef.current!.style.transform = 'scaleX(0)';
+    else if (n == 31) createOneTTWarnRef.current!.style.transform = 'scaleX(1)';
+    else if (n == 30) createOneTTWarnRef.current!.style.transform = 'scaleX(0)';
   };
   const showSection = (n: number) => {
     if (n == 1) {
-      section2Ref.current!.style.right = "-100vw";
-      section3Ref.current!.style.right = "-100vw";
-      footSub.current!.style.color = "green";
-      footTT.current!.style.color = "gray";
+      section2Ref.current!.style.right = '-100vw';
+      section3Ref.current!.style.right = '-100vw';
+      footSub.current!.style.color = 'green';
+      footTT.current!.style.color = 'gray';
       closeArticle(0);
-      footerUnderlineRef.current!.style.left = "0";
+      footerUnderlineRef.current!.style.left = '0';
       return;
     }
 
@@ -498,15 +504,15 @@ const Home: NextPage = () => {
         setTimeout(() => showWarning(10), 2000);
         return;
       }
-      section2Ref.current!.style.right = "0";
-      footSub.current!.style.color = "gray";
-      footTT.current!.style.color = "green";
+      section2Ref.current!.style.right = '0';
+      footSub.current!.style.color = 'gray';
+      footTT.current!.style.color = 'green';
       closeArticle(0);
-      footerUnderlineRef.current!.style.left = "50vw";
+      footerUnderlineRef.current!.style.left = '50vw';
       return;
     }
     if (n == 3) {
-      section3Ref.current!.style.right = "0";
+      section3Ref.current!.style.right = '0';
       closeArticle(0);
       return;
     }
@@ -526,20 +532,51 @@ const Home: NextPage = () => {
   };
   const pictureRef = useRef<HTMLDivElement | null>(null);
 
-  async function takeCC() {
+  async function makePDFAndDownloadIt() {
     let doc = new jsPDF();
-    for (let i = 0; i < schoolTT.length; i++) {
-      if (i != 0) doc.addPage();
+    let width = doc.internal.pageSize.getWidth();
+    let height = doc.internal.pageSize.getHeight();
+    doc.setTextColor(0, 0, 255);
+    doc.setFontSize(22);
+    doc.text('Thanks For using School TimeTable Generator App ', 20, 20);
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
 
-      let div = document.getElementsByClassName("oneTT")[i];
-      let canvas = await html2canvas(div as HTMLElement);
-      let width = doc.internal.pageSize.getWidth();
-      let height = doc.internal.pageSize.getHeight();
-      // let imgData = canvas.toDataURL("image/png", 0, 0, width, height);
-      doc.addImage(canvas, "PNG", 0, height / 4, width, height / 2);
-      doc.text("Thanks For using School TimeTable Generator App", 20, 20);
+    doc.text('Total Classes:', 20, 40);
+    doc.text(schoolTT.length.toString(), width / 2, 40);
+
+    doc.text('Total Periods A Day:', 20, 50);
+    doc.text(periodsADay.toString(), width / 2, 50);
+
+    doc.text('Working/Schooling Days:', 20, 60);
+    doc.text('' + weekDays, width / 2, 60);
+
+    doc.text('Total Periods a week:', 20, 70);
+    doc.text((weekDays.length * periodsADay).toString(), width / 2, 70);
+
+    doc.text('Total Subjects:', 20, 85);
+    doc.text(subjects.length.toString(), width / 2, 85);
+
+    let x = 95;
+    doc.setFontSize(10);
+
+    for (let i = 0; i < subjects.length; i++) {
+      doc.text(i + 1 + '. ' + subjects[i], 20, x);
+      x += 4;
     }
-    doc.save("timetable.pdf");
+    doc.setFontSize(16);
+
+    doc.text('1/ ' + (schoolTT.length + 1), 20, height - 15);
+
+    for (let i = 0; i < schoolTT.length; i++) {
+      doc.addPage();
+      let div = document.getElementsByClassName('oneTT')[i];
+      let canvas = await html2canvas(div as HTMLElement);
+      // let imgData = canvas.toDataURL("image/png", 0, 0, width, height);
+      doc.addImage(canvas, 'PNG', 0, height / 4, width, height / 2);
+      doc.text(i + 2 + '/ ' + (schoolTT.length + 1), 20, height - 15);
+    }
+    doc.save('timetable.pdf');
   }
   const footSub = useRef<HTMLDivElement>(null);
   const footTT = useRef<HTMLDivElement>(null);
@@ -552,7 +589,7 @@ const Home: NextPage = () => {
         return;
       }
     }
-    setSection("X");
+    setSection('X');
   };
   const sectionList = [];
 
@@ -575,7 +612,7 @@ const Home: NextPage = () => {
         }}
       >
         <h1>Subjects List</h1>
-        <input type='text' onChange={(e) => setSubject(e.target.value)} />
+        <input type='text' onChange={e => setSubject(e.target.value)} />
         <button className={styles.addButton} onClick={handleAddSubject}>
           +
         </button>
@@ -588,7 +625,7 @@ const Home: NextPage = () => {
                   {value}
                   <div
                     className={styles.closeButton}
-                    onClick={(e) => deleteSubject(index)}
+                    onClick={e => deleteSubject(index)}
                   >
                     <TiDelete />
                   </div>
@@ -635,7 +672,7 @@ const Home: NextPage = () => {
                     {value}
                   </option>
                 );
-              }
+              },
             )}
           </select>
         </span>
@@ -648,13 +685,13 @@ const Home: NextPage = () => {
             multiple
             size={7}
           >
-            <option value={"MON"}>MON</option>
-            <option value={"TUE"}>TUE</option>
-            <option value={"WED"}>WED</option>
-            <option value={"THU"}>THU</option>
-            <option value={"FRI"}>FRI</option>
-            <option value={"SAT"}>SAT</option>
-            <option value={"SUN"}>SUN</option>
+            <option value={'MON'}>MON</option>
+            <option value={'TUE'}>TUE</option>
+            <option value={'WED'}>WED</option>
+            <option value={'THU'}>THU</option>
+            <option value={'FRI'}>FRI</option>
+            <option value={'SAT'}>SAT</option>
+            <option value={'SUN'}>SUN</option>
           </select>
         </span>
         <div className={styles.warn} ref={noPeriodWeekDatsWarnRef}>
@@ -685,7 +722,7 @@ const Home: NextPage = () => {
         <input
           type='text'
           id='cName'
-          onChange={(e) => setCName(e.target.value)}
+          onChange={e => setCName(e.target.value)}
         />
         <br />
 
@@ -709,7 +746,7 @@ const Home: NextPage = () => {
 
         <div className={styles.pdfButtonGroup}>
           <button onClick={generateTTLoop}>Create One TT</button>
-          <button onClick={takeCC}>Download PDF</button>
+          <button onClick={makePDFAndDownloadIt}>Download PDF</button>
           <button onClick={allClear}>Clear All</button>
         </div>
         <br />
@@ -750,20 +787,19 @@ const Home: NextPage = () => {
               Plz select periods and click on create one time table button
             </div>
           ) : (
-            //dkfjjjjjjjjjjjjjjjjjjjjjjjsfjdslfjdkjdkdklfjdl dkdjlkdjfd
             <div ref={pictureRef}>
               {schoolTT.map((value, i) => {
                 return (
                   <div key={i} className='oneTT'>
-                    <h6>
+                    <h6 className={styles.pdfHeadings}>
                       Standard Name: {value.className}
                       <br />
                       Section: {value.section}
                     </h6>
                     <table className={styles.oneTT}>
                       <tr className={styles.weekDayName}>
-                        <th>Days </th>
-                        {weekDays.map((value) => {
+                        <th>Periods</th>
+                        {weekDays.map(value => {
                           return <th key={value}>{value}</th>;
                         })}
                       </tr>
@@ -800,7 +836,7 @@ const Home: NextPage = () => {
       </section>
       <article className={styles.settingMenuArticle} ref={settingMenu}>
         <h2>Setting</h2>
-        <div>Share App</div>
+        <div>View Ads To help Us</div>
         <div>FeedBack</div>
         <div>Credits</div>
         <div>Version 1.2.1</div>

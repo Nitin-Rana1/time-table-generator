@@ -1,16 +1,15 @@
-interface Class {
-  number: number;
-  sections: Section[];
+export interface OneSectionData {
+  className: string;
+  section: string;
+  subsPeriodsInWeek: Array<number>;
 }
-
-interface Section {
-  timeTable: string[][];
+export interface CommonData {
+  subjects: string[];
+  periodsADay: number | undefined;
+  weekDays: string[];
 }
-
-const classes: Class[] = [];
-
-const createClass = () => {
-  classes.push({ number: 1, sections: [] });
-};
-
-export default {};
+export interface TT {
+  className: string;
+  section: string;
+  tt: Array<Array<string | null>>;
+}
