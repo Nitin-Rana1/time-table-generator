@@ -4,6 +4,7 @@ import { FormEventHandler, useEffect, useRef, useState } from 'react';
 import Header from '../components/Header';
 import styles from '../styles/Home.module.scss';
 import stylesF from '../styles/Footer.module.scss';
+import stylesSet from '../styles/Setting.module.scss';
 //for pdf
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
