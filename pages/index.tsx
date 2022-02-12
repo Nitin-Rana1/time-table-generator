@@ -5,6 +5,8 @@ import Header from '../components/Header';
 import styles from '../styles/Home.module.scss';
 import stylesF from '../styles/Footer.module.scss';
 import stylesSet from '../styles/Setting.module.scss';
+import stylesHomeS from '../styles/HomeScreen.module.scss';
+
 //for pdf
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -12,6 +14,7 @@ import jsPDF from 'jspdf';
 import { VscThreeBars } from 'react-icons/vsc';
 import { TiDelete } from 'react-icons/ti';
 import { BiArrowBack } from 'react-icons/bi';
+import { GrDocumentPdf } from 'react-icons/gr';
 //interfaces
 import { OneSectionData, CommonData, TT } from '../lib/utils';
 
@@ -124,6 +127,12 @@ const Home: NextPage = () => {
       }, 2000);
       return;
     }
+
+    console.log('OYO');
+    showWarning(41);
+    setTimeout(() => {
+      showWarning(40);
+    }, 2200);
 
     // Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /
     // {weekDays.length * periodsADay!}
@@ -437,6 +446,8 @@ const Home: NextPage = () => {
     subjects.splice(i, 1);
     setSubjects([...subjects]);
   };
+  const section1Ref = useRef<HTMLElement>(null);
+
   const section2Ref = useRef<HTMLElement>(null);
   const section3Ref = useRef<HTMLElement>(null);
   const settingMenu = useRef<HTMLElement>(null);
@@ -474,6 +485,7 @@ const Home: NextPage = () => {
   const noSubWarnRef = useRef<HTMLDivElement>(null);
   const noPeriodWeekDatsWarnRef = useRef<HTMLDivElement>(null);
   const createOneTTWarnRef = useRef<HTMLDivElement>(null);
+  const ttCreatedRef = useRef<HTMLDivElement>(null);
   const [createOneTTWarnMsg, setCreateOneTTWarnMsg] = useState(
     'Please fill all subjects periods',
   );
@@ -487,9 +499,12 @@ const Home: NextPage = () => {
       noPeriodWeekDatsWarnRef.current!.style.transform = 'scaleX(0)';
     else if (n == 31) createOneTTWarnRef.current!.style.transform = 'scaleX(1)';
     else if (n == 30) createOneTTWarnRef.current!.style.transform = 'scaleX(0)';
+    else if (n == 41) ttCreatedRef.current!.style.transform = 'scaleX(1)';
+    else if (n == 40) ttCreatedRef.current!.style.transform = 'scaleX(0)';
   };
   const showSection = (n: number) => {
     if (n == 1) {
+      section1Ref.current!.style.left = '0';
       section2Ref.current!.style.right = '-100vw';
       section3Ref.current!.style.right = '-100vw';
       footSub.current!.style.color = 'green';
@@ -505,6 +520,7 @@ const Home: NextPage = () => {
         setTimeout(() => showWarning(10), 2000);
         return;
       }
+      section1Ref.current!.style.left = '0';
       section2Ref.current!.style.right = '0';
       footSub.current!.style.color = 'gray';
       footTT.current!.style.color = 'green';
@@ -513,6 +529,9 @@ const Home: NextPage = () => {
       return;
     }
     if (n == 3) {
+      section1Ref.current!.style.left = '-100vw';
+      section2Ref.current!.style.right = '-100vw';
+
       section3Ref.current!.style.right = '0';
       closeArticle(0);
       return;
@@ -594,7 +613,7 @@ const Home: NextPage = () => {
   };
   const sectionList = [];
 
-  for (let i = 65; i <= 90; i++) {
+  for (let i = 65; i <= 80; i++) {
     sectionList.push(String.fromCharCode(i));
   }
   for (let i = 0; i <= 10; i++) {
@@ -603,38 +622,39 @@ const Home: NextPage = () => {
   return (
     <main className={styles.container}>
       <Header />
-      <span onClick={() => showArticle(0)} className={styles.settingIcon}>
+      <span onClick={() => showArticle(0)} className={stylesHomeS.settingIcon}>
         <VscThreeBars />
       </span>
       <section
-        className={styles.section1}
+        ref={section1Ref}
+        className={stylesHomeS.section1}
         onClick={() => {
           closeArticle(0);
         }}
       >
         <h1>Subjects List</h1>
         <input type='text' onChange={e => setSubject(e.target.value)} />
-        <button className={styles.addButton} onClick={handleAddSubject}>
+        <button className={stylesHomeS.addButton} onClick={handleAddSubject}>
           +
         </button>
-        <div className={styles.allSubjects}>
+        <div className={stylesHomeS.allSubjects}>
           {subjects.length > 0 ? (
             subjects.map((value, index) => {
               return (
-                <div className={styles.subData} key={index}>
+                <div className={stylesHomeS.subData} key={index}>
                   <span>{index + 1}.</span>
-                  {value}
-                  <div
-                    className={styles.closeButton}
+                  <span>{value}</span>
+                  <span
+                    className={stylesHomeS.closeButton}
                     onClick={e => deleteSubject(index)}
                   >
                     <TiDelete />
-                  </div>
+                  </span>
                 </div>
               );
             })
           ) : (
-            <div className={styles.noSubWarn}>
+            <div className={stylesHomeS.noSubWarn}>
               <div className={styles.warn} ref={noSubWarnRef}>
                 Please Add Subjects First!!
               </div>
@@ -712,6 +732,12 @@ const Home: NextPage = () => {
         <h3 className={styles.textAlignCenter}>
           Here, create timetable one class at a Time
         </h3>
+        <div className={`${styles.warn} ${styles.green}`} ref={ttCreatedRef}>
+          One class TimeTable created scroll down to see!
+        </div>
+        <div className={styles.warn} ref={createOneTTWarnRef}>
+          {createOneTTWarnMsg}
+        </div>
         <div className={styles.warn} ref={createOneTTWarnRef}>
           {createOneTTWarnMsg}
         </div>
@@ -747,7 +773,9 @@ const Home: NextPage = () => {
 
         <div className={styles.pdfButtonGroup}>
           <button onClick={generateTTLoop}>Create One TT</button>
-          <button onClick={makePDFAndDownloadIt}>Download PDF</button>
+          <button onClick={makePDFAndDownloadIt}>
+            Download <GrDocumentPdf />
+          </button>
           <button onClick={allClear}>Clear All</button>
         </div>
         <br />
@@ -832,35 +860,34 @@ const Home: NextPage = () => {
               })}
             </div>
           )}
-          {/* <img ref={pictureOutputRef} /> */}
         </article>
       </section>
-      <article className={styles.settingMenuArticle} ref={settingMenu}>
+      <article className={stylesSet.settingMenuArticle} ref={settingMenu}>
         <h2>Setting</h2>
         <div>View Ads To help Us</div>
-        <div>FeedBack</div>
-        <div>Credits</div>
-        <div>Version 1.2.1</div>
-        <div>Language</div>
+        <div>Version 1.0.0</div>
         <div onClick={() => showArticle(1)}>About Us</div>
       </article>
-      <article className={styles.settingMenuAboutUs} ref={settingMenuAboutUs}>
+      <article
+        className={stylesSet.settingMenuAboutUs}
+        ref={settingMenuAboutUs}
+      >
         {/* <section className={styles.style1}></section> */}
         <span onClick={() => closeArticle(1)}>
           <BiArrowBack />
         </span>
-        <section className={styles.style2}></section>
+        <section className={stylesSet.style2}></section>
 
-        <section className={styles.one}>
-          <h2 className={styles.textAlignCenter}>Indian App Team NTECH</h2>
+        <section className={stylesSet.one}>
+          <h2 className={stylesSet.textAlignCenter}>Indian App Team NTECH</h2>
           <p>
             NTECH is Indian based app developer team, we at NTECH aims at
             providing apps that are helpful to you customers and do our best to
             provide you services that saves your time and effort.
           </p>
         </section>
-        <h2 className={styles.textAlignCenter}>Our Member</h2>
-        <section className={styles.two}>
+        <h2 className={stylesSet.textAlignCenter}>Our Member</h2>
+        <section className={stylesSet.two}>
           <div>
             <img src='i6.jpg' alt='men' />
             <caption>

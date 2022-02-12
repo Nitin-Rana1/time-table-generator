@@ -1,0 +1,78 @@
+.settingIcon {
+  position: absolute;
+  top: 1.5vh;
+  left: 0;
+  padding: 5px;
+  font-size: 1.4em;
+  color: coral;
+}
+.section1 {
+  position: absolute;
+  top: 8vh;
+  left: 0;
+  transition: all 0;
+  height: 84vh;
+  width: 100vw;
+  overflow: hidden;
+
+  h1 {
+    // color: #1e0eaa;
+    text-align: center;
+    height: 4vh;
+    margin: 2vh 0;
+  }
+  input {
+    width: 70vw;
+    margin: 2vh 7vw;
+    height: 4vh;
+    min-height: 35px;
+  }
+  button {
+    color: white;
+  }
+  .addButton {
+    border-radius: 5px;
+    background-color: hotpink;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: none;
+    transform: scale(2);
+    font-weight: bolder;
+  }
+
+  .noSubWarn {
+    color: grey;
+    width: 100vw;
+    height: 68vh;
+    display: grid;
+    place-content: center;
+    text-align: center;
+  }
+  .allSubjects {
+    overflow: scroll;
+    height: 68vh;
+    .subData {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 3vw;
+      padding-right: 0;
+      border-radius: 15px;
+      margin: 1vh 3vw;
+      background-color: #1e0eaa;
+      color: white;
+      font-size: 0.8em;
+
+      span {
+        display: grid;
+        place-items: center;
+      }
+      .closeButton {
+        color: rgb(243, 16, 16);
+        font-size: 2.5em;
+        font-weight: 600;
+      }
+    }
+
+    .subData:nth-child(even) {
+    }
+  }
+}

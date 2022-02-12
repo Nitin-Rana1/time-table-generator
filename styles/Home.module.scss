@@ -1,69 +1,10 @@
 .container {
+  background-color: white;
   position: relative;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  .settingIcon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 5px;
-    font-size: 1.4em;
-  }
-  .section1 {
-    height: 84vh;
-    width: 100vw;
-    overflow: hidden;
-    h1 {
-      text-align: center;
-      height: 4vh;
-      margin: 2vh 0;
-    }
-    input {
-      width: 70vw;
-      margin: 2vh 10vw;
-      // transform: scaleY(1.4);
-      height: 4vh;
-    }
-    button {
-      color: white;
-    }
-    .addButton {
-      border-radius: 50%;
-      background-color: green;
-      transform: scale(1.5);
-    }
 
-    .noSubWarn {
-      color: grey;
-      width: 100vw;
-      height: 68vh;
-      display: grid;
-      place-content: center;
-      text-align: center;
-    }
-    .allSubjects {
-      overflow: scroll;
-      height: 68vh;
-      .subData {
-        display: flex;
-        justify-content: space-between;
-        padding: 1vh 3vw;
-        border-radius: 15px;
-        margin-bottom: 0.5vh;
-        background-color: #5b4999;
-        color: white;
-        font-size: 0.8em;
-        .closeButton {
-          color: red;
-          font-size: 1.5em;
-          font-weight: 600;
-        }
-      }
-      .subData:nth-child(even) {
-      }
-    }
-  }
   .section2 {
     transition: all 600ms;
     position: absolute;
@@ -111,7 +52,8 @@
     }
   }
   .section3 {
-    transition: all 600ms;
+    transition: all 0ms;
+
     position: absolute;
     bottom: 8vh;
     right: -100vw;
@@ -193,86 +135,6 @@
       }
     }
   }
-  .settingMenuArticle {
-    background-color: white;
-    transition: all 700ms;
-    position: absolute;
-    bottom: 0;
-    // left: -100vw;
-    height: 100vh;
-    width: 60vw;
-    overflow: scroll;
-    clip-path: circle(0% at 0% 0%);
-    h2 {
-      text-align: center;
-    }
-    div {
-      background-color: #f2f2f2;
-      padding: 1vw;
-      margin-bottom: 4vh;
-      border-radius: 50px;
-    }
-  }
-  .settingMenuAboutUs span:first-of-type {
-    font-size: 2em;
-  }
-  .settingMenuAboutUs {
-    background-color: white;
-    position: absolute;
-    top: 0;
-    left: -100vw;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
-    background-color: black;
-    color: white;
-    // .style1 {
-    //   position: absolute;
-    //   clip-path: polygon(0 0, 0% 100%, 100% 0);
-    //   height: 50vh;
-    //   width: 100vw;
-    //   background-color: black;
-    //   z-index: -1;
-    //   left: 0;
-    //   top: 0;
-    // }
-    transition: all 400ms;
-    .style2 {
-      position: absolute;
-      height: 65vh;
-      width: 100vw;
-      right: 0;
-      bottom: 0;
-      background-color: #7d1860;
-      z-index: -1;
-      clip-path: polygon(100% 100%, 0% 100%, 100% 0);
-    }
-    .one {
-      p {
-        margin: 3vh 0vw;
-        padding: 10px;
-      }
-    }
-    .two {
-      display: flex;
-      justify-content: space-between;
-      height: 65vw;
-      div {
-        position: relative;
-        img {
-          width: 45vw;
-          height: 45vw;
-          clip-path: circle(50% at 50% 50%);
-        }
-        caption {
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-        }
-      }
-    }
-  }
 }
 .textAlignCenter {
   text-align: center;
@@ -281,12 +143,13 @@
   margin-right: 2vw;
 }
 .warn {
-  color: red;
+  color: white;
   font-weight: bolder;
   transition: all 200ms;
   transform: scaleX(0);
-  padding: 2vh;
+  padding: 1vh;
   text-align: center;
+  background-color: red;
 }
 .section3 {
   .warn {
@@ -295,4 +158,9 @@
     left: 0;
     width: 100vw;
   }
+}
+.green {
+  color: white;
+  background-color: rgb(33, 191, 33);
+  font-size: 1em;
 }
