@@ -1,5 +1,6 @@
 .settingMenuArticle {
   background-color: #ebebeb;
+  background-color: #9c9c9c;
   transition: all 700ms;
   position: absolute;
   bottom: 0;
@@ -16,9 +17,12 @@
     text-align: center;
 
     background-color: white;
-    padding: 1vw 3vw;
     margin-bottom: 4vh;
-    border-radius: 50px;
+    border-radius: 15px;
+    p {
+      background-color: #6a6a6a;
+      color: white;
+    }
   }
 }
 .settingMenuAboutUs span:first-of-type {

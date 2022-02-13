@@ -1,0 +1,103 @@
+.section3 {
+  transition: all 0ms;
+
+  position: absolute;
+  bottom: 8vh;
+  right: -100vw;
+  height: 84vh;
+  width: 100vw;
+  background-color: white;
+  overflow: scroll;
+  h3 {
+    text-align: center;
+    font-size: 1.1em;
+    margin: 1vh;
+    font-weight: 600;
+  }
+  label,
+  input {
+    display: inline-block;
+    width: 45vw;
+  }
+  .section3Data {
+    max-height: 45vh;
+    overflow: scroll;
+    div {
+      display: flex;
+      justify-content: space-between;
+      padding: 1vh 5vw;
+      background-color: #04aa8b;
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+      // border-radius: 50px;
+      font-size: 0.75em;
+      color: black;
+      button {
+        margin-left: 1vw;
+        width: 10vw;
+        font-size: 1.2em;
+      }
+      small {
+        display: inline-block;
+        width: 20vw;
+        text-align: center;
+      }
+      span {
+        display: flex;
+        align-items: center;
+        text-align: center;
+      }
+    }
+    div span:last-of-type {
+      // font-size: 1em;
+    }
+  }
+  article {
+    table {
+      display: inline-block;
+      font-size: 0.5em;
+      width: 100vw;
+      max-width: 100vw;
+      overflow: scroll;
+      th {
+        background-color: #04aa6d;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+  .selectSection {
+    width: 30vw;
+  }
+  .pdfHeadings {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: #0b6644;
+    font-weight: bolder;
+  }
+  .pdfButtonGroup {
+    display: flex;
+    justify-content: space-evenly;
+    button {
+      padding: 1vw;
+    }
+    button:last-child {
+      background-color: red;
+      color: white;
+    }
+  }
+}
+.section3 {
+  .warnn {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
+.note {
+  font-size: 0.75em;
+  text-align: center;
+  color: gray;
+}

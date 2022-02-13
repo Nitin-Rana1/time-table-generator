@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.scss';
 import stylesF from '../styles/Footer.module.scss';
 import stylesSet from '../styles/Setting.module.scss';
 import stylesHomeS from '../styles/HomeScreen.module.scss';
+import stylesLastS from '../styles/LastScreen.module.scss';
 
 //for pdf
 import html2canvas from 'html2canvas';
@@ -451,11 +452,11 @@ const Home: NextPage = () => {
   const section2Ref = useRef<HTMLElement>(null);
   const section3Ref = useRef<HTMLElement>(null);
   const settingMenu = useRef<HTMLElement>(null);
-  const settingMenuAboutUs = useRef<HTMLElement>(null);
-  const settingMenuFeedBack = useRef<HTMLElement>(null);
-  const settingMenuContactUs = useRef<HTMLElement>(null);
-  const settingMenuHowToUse = useRef<HTMLElement>(null);
-  const settingMenuPremiumApp = useRef<HTMLElement>(null);
+  // const settingMenuAboutUs = useRef<HTMLElement>(null);
+  // const settingMenuFeedBack = useRef<HTMLElement>(null);
+  // const settingMenuContactUs = useRef<HTMLElement>(null);
+  // const settingMenuHowToUse = useRef<HTMLElement>(null);
+  // const settingMenuPremiumApp = useRef<HTMLElement>(null);
 
   const closeArticle = (n: number) => {
     //settingmenu itself
@@ -465,9 +466,9 @@ const Home: NextPage = () => {
       setIsSettingOpen(0);
     }
     //About Us
-    if (n == 1) {
-      settingMenuAboutUs.current!.style.left = '-100vw';
-    }
+    // if (n == 1) {
+    //   settingMenuAboutUs.current!.style.left = '-100vw';
+    // }
   };
   const showArticle = (n: number) => {
     if (n == 0) {
@@ -476,9 +477,9 @@ const Home: NextPage = () => {
       setIsSettingOpen(1);
     }
     //About Us
-    if (n == 1) {
-      settingMenuAboutUs.current!.style.left = '0';
-    }
+    // if (n == 1) {
+    //   settingMenuAboutUs.current!.style.left = '0';
+    // }
   };
   const footerUnderlineRef = useRef<HTMLDivElement>(null);
   //warnings ref
@@ -723,28 +724,35 @@ const Home: NextPage = () => {
         </button>
       </section>
       <section
-        className={styles.section3}
+        className={stylesLastS.section3}
         ref={section3Ref}
         onClick={() => {
           closeArticle(0);
         }}
       >
-        <h3 className={styles.textAlignCenter}>
-          Here, create timetable one class at a Time
-        </h3>
-        <div className={`${styles.warn} ${styles.green}`} ref={ttCreatedRef}>
+        <h3>Create multiple Timetable for school</h3>
+        <div
+          className={`${styles.warn} ${styles.green} ${stylesLastS.warnn}`}
+          ref={ttCreatedRef}
+        >
           One class TimeTable created scroll down to see!
         </div>
-        <div className={styles.warn} ref={createOneTTWarnRef}>
+        <div
+          className={`${styles.warn} ${stylesLastS.warnn}`}
+          ref={createOneTTWarnRef}
+        >
           {createOneTTWarnMsg}
         </div>
-        <div className={styles.warn} ref={createOneTTWarnRef}>
+        <div
+          className={`${styles.warn} ${stylesLastS.warnn}`}
+          ref={createOneTTWarnRef}
+        >
           {createOneTTWarnMsg}
         </div>
-        <h4 className={styles.textAlignCenter}>
+        <h3 className={styles.textAlignCenter}>
           Periods In week: {subPeriodsInWeek.reduce((a, b) => a + b, 0)} /
           {weekDays.length * periodsADay!}
-        </h4>
+        </h3>
         <label htmlFor='cName'>Standard Name:</label>
         <input
           type='text'
@@ -755,7 +763,7 @@ const Home: NextPage = () => {
 
         <label htmlFor='section'>Section:</label>
         <select
-          className={styles.selectSection}
+          className={stylesLastS.selectSection}
           ref={selectSectionRef}
           id='section'
           onChange={selectSection}
@@ -771,7 +779,7 @@ const Home: NextPage = () => {
         <br />
         <br />
 
-        <div className={styles.pdfButtonGroup}>
+        <div className={stylesLastS.pdfButtonGroup}>
           <button onClick={generateTTLoop}>Create One TT</button>
           <button onClick={makePDFAndDownloadIt}>
             Download <GrDocumentPdf />
@@ -779,7 +787,7 @@ const Home: NextPage = () => {
           <button onClick={allClear}>Clear All</button>
         </div>
         <br />
-        <div className={styles.section3Data}>
+        <div className={stylesLastS.section3Data}>
           {subjects.length >= 1 ? (
             subjects.map((value, index) => {
               return (
@@ -807,26 +815,26 @@ const Home: NextPage = () => {
           Save This Set Of School TimeTables
         </button> */}
         {/* <button onClick={allSee}>all c</button> */}
-        <br />
         <hr />
 
         <article>
           {schoolTT.length == 0 ? (
-            <div className={styles.textAlignCenter}>
-              Plz select periods and click on create one time table button
+            <div className={stylesLastS.note}>
+              Create timetable one at a time like 9-A, 9-B, 10-A, 10-B and so
+              on. Plz select periods and click on create one time table button
             </div>
           ) : (
             <div ref={pictureRef}>
               {schoolTT.map((value, i) => {
                 return (
                   <div key={i} className='oneTT'>
-                    <h6 className={styles.pdfHeadings}>
+                    <h6 className={stylesLastS.pdfHeadings}>
                       Standard Name: {value.className}
                       <br />
                       Section: {value.section}
                     </h6>
-                    <table className={styles.oneTT}>
-                      <tr className={styles.weekDayName}>
+                    <table className={stylesLastS.oneTT}>
+                      <tr className={stylesLastS.weekDayName}>
                         <th>Periods</th>
                         {weekDays.map(value => {
                           return <th key={value}>{value}</th>;
@@ -835,7 +843,7 @@ const Home: NextPage = () => {
                       {value.tt.map((value, i1) => {
                         return (
                           <>
-                            <tr className={styles.ttRow} key={i1}>
+                            <tr className={stylesLastS.ttRow} key={i1}>
                               {value.map((value, i2) => {
                                 return (
                                   <>
@@ -866,13 +874,17 @@ const Home: NextPage = () => {
         <h2>Setting</h2>
         <div>View Ads To help Us</div>
         <div>Version 1.0.0</div>
-        <div onClick={() => showArticle(1)}>About Us</div>
+        <div>
+          About Us
+          <p>We are Indian app developer team.</p>
+        </div>
       </article>
+
+      {/*
       <article
         className={stylesSet.settingMenuAboutUs}
         ref={settingMenuAboutUs}
       >
-        {/* <section className={styles.style1}></section> */}
         <span onClick={() => closeArticle(1)}>
           <BiArrowBack />
         </span>
@@ -904,6 +916,7 @@ const Home: NextPage = () => {
           </div>
         </section>
       </article>
+      */}
       <footer className={stylesF.footer}>
         <div onClick={() => showSection(1)} ref={footSub}>
           Subjects
