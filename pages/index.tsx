@@ -14,7 +14,6 @@ import jsPDF from 'jspdf';
 //icons
 import { VscThreeBars } from 'react-icons/vsc';
 import { TiDelete } from 'react-icons/ti';
-import { BiArrowBack } from 'react-icons/bi';
 import { GrDocumentPdf } from 'react-icons/gr';
 //interfaces
 import { OneSectionData, CommonData, TT } from '../lib/utils';
