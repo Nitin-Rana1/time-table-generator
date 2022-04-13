@@ -24,7 +24,14 @@ const Home: NextPage = () => {
   const [subject, setSubject] = useState<string>("");
 
   const handleAddSubject = () => {
+    if (subject == "") return;
     allClear();
+    if (subjects.length > 0) {
+      window.localStorage.setItem(
+        "subjects",
+        JSON.stringify([...subjects, subject])
+      );
+    }
     setSubjects([...subjects, subject]);
   };
 
@@ -54,6 +61,13 @@ const Home: NextPage = () => {
   const [subAllocated, setSubAllocated] = useState<
     Array<Array<Array<string | null>>>
   >([]);
+
+  useEffect(() => {
+    if (window.localStorage.getItem("subjects")) {
+      let arr = window.localStorage.getItem("subjects");
+      setSubjects(JSON.parse(arr!));
+    }
+  }, []);
   const makeSubAll = () => {
     let subjectsAllocated: Array<Array<Array<string | null>>> = [];
     for (let i = 0; i < subjects.length; i++) {
@@ -423,6 +437,7 @@ const Home: NextPage = () => {
     if (isSettingOpen == 1) return;
     allClear();
     subjects.splice(i, 1);
+    window.localStorage.setItem("subjects", JSON.stringify([...subjects]));
     setSubjects([...subjects]);
   };
   const section1Ref = useRef<HTMLElement>(null);
@@ -525,6 +540,7 @@ const Home: NextPage = () => {
         }, 2000);
         return;
       }
+
       makeSubAll();
       showSection(3);
     }
@@ -640,12 +656,21 @@ const Home: NextPage = () => {
               No subjects Added Yet
               <br />
               <br />
-              Plz List all Subjects of School.
+              Please list all Subjects of School/College.
               <br />
               <br />
-              Note:- Add Subject with Teacher Name like Maths By Mishra Sir or
-              MathsA, MathsB. So that two classes can have a subject in same
-              periods if teachers are different.
+              <b>Note:-</b>
+              <ul>
+                <li>
+                  Add Subject with Teacher Name like Maths By Mishra Sir or
+                  MathsA, MathsB.
+                </li>
+
+                <li>
+                  So that two classes can have a subject in same periods if
+                  teachers are different.
+                </li>
+              </ul>
             </div>
           )}
         </div>
